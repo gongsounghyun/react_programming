@@ -25,7 +25,7 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} />
-          <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, null)} />
+          <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, true)} />
           <Route exact path="/subscription" component={Auth(SubscriptionPage, null)} />
 
         </Switch>
