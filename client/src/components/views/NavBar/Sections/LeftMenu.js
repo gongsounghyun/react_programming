@@ -9,8 +9,17 @@ function LeftMenu(props) {
     <Menu.Item key="mail">
       <a href="/">Home</a>
     </Menu.Item>
+    <Menu.Item key="image_search">
+      <a href="/image">이미지</a>
+    </Menu.Item>
+    <Menu.Item key="video_search">
+      <a href="/landing">비디오</a>
+    </Menu.Item>
+    <Menu.Item key="three_grade">
+      <a href="/subscription">3대 측정</a>
+    </Menu.Item>
     <Menu.Item key="subscription">
-      <a href="/subscription">Subscription</a>
+      <a href="/subscription">구독 목록</a>
     </Menu.Item>
   </Menu>
   )

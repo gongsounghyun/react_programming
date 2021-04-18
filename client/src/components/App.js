@@ -9,7 +9,10 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 import VideoUploadPage from './views/VideoUploadPage/VideoUploadPage';
 import VideoDetailPage from './views/VideoDetailPage/VideoDetailPage';
-import SubscriptionPage from './views/SubscriptionPage/SubscriptionPage'
+import SubscriptionPage from './views/SubscriptionPage/SubscriptionPage';
+import imageUpload from './views/ImageUpload/ImageUpload';
+import imageLandingPage from './views/ImageLandingPage/ImageLandingPage';
+import FrontPage from './views/FrontPage/FrontPage';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -21,10 +24,13 @@ function App() {
       <NavBar />
       <div style={{ paddingTop: '69px', minHeight: 'calc(100vh - 80px)' }}>
         <Switch>
-          <Route exact path="/" component={Auth(LandingPage, null)} />
+          <Route exact path="/" component={Auth(FrontPage, null)} />
+          <Route exact path="/landing" component={Auth(LandingPage, null)} />
+          <Route exact path="/image" component={Auth(imageLandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} />
+          <Route exact path="/image/upload" component={Auth(imageUpload, true)} />
           <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, true)} />
           <Route exact path="/subscription" component={Auth(SubscriptionPage, null)} />
 

@@ -7,46 +7,24 @@ import { withRouter } from "react-router-dom";
 
 const { TextArea} = Input;
 const { Title } = Typography;
-const PrivateOptions = [
-    {value : 0, label : "Private"},
-    {value : 1, label : "Public"}
-]
 
-const CategoryOption = [
-    {value : 0, label : "Film & Animation"},
-    {value : 1, label : "Auto & Vehices"},
-    {value : 2, label : "Music"},
-    {value : 3, label : "Pets & Animals"}
-]
-
-
-function VideoUploadPage(props){
+function ImageUploadPage(props){
     
     const user = useSelector(state => state.user);
     //크롬 redux스토어 도구를 보면 user라는 state가 있다.
     //해당 state의 모든 json 데이터 들이 user라는 변수에 담긴다.
-    const [VideoTitle, setVideoTitle] = useState("");
+    const [ImageTitle, setImageTitle] = useState("");
     const [Description, setDescription] = useState("");
-    const [Private, setPrivate] = useState(0);
-    const [Category, setCategory] = useState("Film & Animation");
-
-    const [FilePath, setFilePath] = useState("")
-    const [Duration, setDuration] = useState("")
-    const [ThumbnailPath, setThumbnailPath] = useState("")
+    const [LocalFilePath, setLocalFilePath] = useState("");
+    const [ImageName, setImageName] = useState("");
+    const [FilePath, setFilePath] = useState("");
 
     const onTitleChange = (e) => {
-        setVideoTitle(e.currentTarget.value);
+        setImageTitle(e.currentTarget.value);
     }
 
     const onDescriptionChange = (e) => {
         setDescription(e.currentTarget.value);
-    }
-
-    const onPrivateChange = (e) => {
-        setPrivate(e.currentTarget.value);
-    } 
-    const onCategoryChange = (e) => {
-        setCategory(e.currentTarget.value);
     }
 
     const onDrop = (files) => {
@@ -57,28 +35,20 @@ function VideoUploadPage(props){
         }
         formData.append("file", files[0])
 
-        Axios.post('/api/video/uploadfiles', formData, config)
+        Axios.post('/api/image/uploadImagefiles', formData, config)
         .then(response => {
             if(response.data.success){
                 console.log(response.data);
-
                 let variable = {
                     url : response.data.url,
-                    filename : response.data.filename
+                    filename : response.data.filename,
                 }
 
-                setFilePath(response.data.url);
+                let filename1 = "http://localhost:5000/uploads/image/"+response.data.filename;
 
-                Axios.post('/api/video/thumbnail', variable)
-                .then(response => {
-                    if(response.data.success){
-                        setDuration(response.data.fileDuration); // 동영상 길이
-                        setThumbnailPath(response.data.url); // 썸네일 주소
-                        console.log(response.data)
-                    }else{
-                        alert("썸네일 생성 실패");
-                    }
-                })
+                setFilePath(filename1);
+                setImageName(response.data.filename);
+                //setLocalFilePath(localpath);
             }else{
                 alert('비디오 업로드 실패');
             }
@@ -90,23 +60,21 @@ function VideoUploadPage(props){
 
         const variable = {
             writer: user.userData._id,
-            title: VideoTitle,
+            title: ImageTitle,
+            filename : ImageName,
             description: Description,
-            privacy: Private,
             filePath: FilePath,
-            category: Category,
-            duration: Duration,
-            thumbnail: ThumbnailPath,
+            localfilepath : LocalFilePath,
           }
 
-        Axios.post('/api/video/uploadVideo', variable)
+        Axios.post('/api/image/uploadImage', variable)
         .then(response => {
             if(response.data.success){
                 console.log(response.data);
                 message.success('성공적으로 업로드를 했습니다.');
 
                 setTimeout(() => {
-                    props.history.push('/landing');
+                    props.history.push('/');
                 }, 3000);
                 
             }else{
@@ -118,7 +86,7 @@ function VideoUploadPage(props){
     return(
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <Title level={2} > Upload Video</Title>
+                <Title level={2} > Upload image</Title>
             </div>
 
             <Form onSubmit = {onSumit}>
@@ -135,14 +103,13 @@ function VideoUploadPage(props){
                              display : 'flex', alignItems:'center', justifyContent : 'center'}} {...getRootProps()}>
                                  <input {...getInputProps() } />
                                  <Icon type = "plus" style = {{fontSize : '3rm'}} />
-
                             </div>
                         )}
                     </Dropzone>
                     { /* 썸네일 */ }
-                    {ThumbnailPath !== '' && 
+                    {FilePath !== '' && 
                         <div>
-                            <img src={`http://localhost:5000/${ThumbnailPath}`} alt="haha" />
+                            <img src={"http://localhost:5000/uploads/image/"+ ImageName} alt="haha" />
                         </div>
                     }
                 </div>
@@ -151,7 +118,7 @@ function VideoUploadPage(props){
                 <label>Title</label>
                 <Input
                     onChange = { onTitleChange }
-                    value = { VideoTitle }
+                    value = { ImageTitle }
                 />
                 <br />
                 <br />
@@ -166,22 +133,6 @@ function VideoUploadPage(props){
                 <br />
                 <br />
 
-                <select onChange = { onPrivateChange } >
-                    {PrivateOptions.map((item, index) => (
-                        <option key = { index } value = {item.value}> { item.label } </option>
-                    ))}
-                </select>
-                <br />
-                <br />
-
-                <select onChange = { onCategoryChange }>
-                    {CategoryOption.map((item, index) => (
-                        <option key = { index } value = {item.value}> { item.label } </option>
-                    ))}
-                </select>
-                <br />
-                <br />
-
                 <Button type = "primary" size = "large" onClick = {onSumit}>
                     submit
                 </Button>
@@ -190,4 +141,4 @@ function VideoUploadPage(props){
     )
 }
 
-export default withRouter(VideoUploadPage)
+export default withRouter(ImageUploadPage)
