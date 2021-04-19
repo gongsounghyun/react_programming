@@ -7,17 +7,6 @@ import { withRouter } from "react-router-dom";
 
 const { TextArea} = Input;
 const { Title } = Typography;
-const PrivateOptions = [
-    {value : 0, label : "Private"},
-    {value : 1, label : "Public"}
-]
-
-const CategoryOption = [
-    {value : 0, label : "Film & Animation"},
-    {value : 1, label : "Auto & Vehices"},
-    {value : 2, label : "Music"},
-    {value : 3, label : "Pets & Animals"}
-]
 
 
 function VideoUploadPage(props){
@@ -27,8 +16,6 @@ function VideoUploadPage(props){
     //해당 state의 모든 json 데이터 들이 user라는 변수에 담긴다.
     const [VideoTitle, setVideoTitle] = useState("");
     const [Description, setDescription] = useState("");
-    const [Private, setPrivate] = useState(0);
-    const [Category, setCategory] = useState("Film & Animation");
 
     const [FilePath, setFilePath] = useState("")
     const [Duration, setDuration] = useState("")
@@ -40,13 +27,6 @@ function VideoUploadPage(props){
 
     const onDescriptionChange = (e) => {
         setDescription(e.currentTarget.value);
-    }
-
-    const onPrivateChange = (e) => {
-        setPrivate(e.currentTarget.value);
-    } 
-    const onCategoryChange = (e) => {
-        setCategory(e.currentTarget.value);
     }
 
     const onDrop = (files) => {
@@ -92,9 +72,7 @@ function VideoUploadPage(props){
             writer: user.userData._id,
             title: VideoTitle,
             description: Description,
-            privacy: Private,
             filePath: FilePath,
-            category: Category,
             duration: Duration,
             thumbnail: ThumbnailPath,
           }
@@ -163,22 +141,6 @@ function VideoUploadPage(props){
                     onChange = { onDescriptionChange }
                     value = { Description }
                     />
-                <br />
-                <br />
-
-                <select onChange = { onPrivateChange } >
-                    {PrivateOptions.map((item, index) => (
-                        <option key = { index } value = {item.value}> { item.label } </option>
-                    ))}
-                </select>
-                <br />
-                <br />
-
-                <select onChange = { onCategoryChange }>
-                    {CategoryOption.map((item, index) => (
-                        <option key = { index } value = {item.value}> { item.label } </option>
-                    ))}
-                </select>
                 <br />
                 <br />
 
