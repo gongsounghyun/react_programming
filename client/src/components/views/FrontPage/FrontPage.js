@@ -1,5 +1,5 @@
 import React from 'react'
-import home_image from '/Users/gongseonghyeon/Desktop/react/boilerplate-mern-stack-master/client/src/image/logo_home.JPG'
+import home_image from '../../../image/logo_home.JPG';
 
 function FrontPage() {
     return (

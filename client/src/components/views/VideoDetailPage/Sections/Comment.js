@@ -17,14 +17,16 @@ function Comment(props) {
     event.preventDefault();
     const variables = {
       content: commentValue,
-      writer: user.userData._id,
+      name: user.userData.name,
       postId: videoId,
+      image : user.userData.image,
+      responseTo: null,
     };
     Axios.post('/api/comment/saveComment', variables).then((response) => {
       if (response.data.success) {
-        console.log(response.data.result);
+        console.log("comment : ", response.data.recoment);
         setcommentValue("");
-        props.refreshFunction(response.data.result);
+        props.refreshFunction(response.data.recoment);
       } else {
         alert('커멘트를 저장하지 못했습니다.');
       }
@@ -48,13 +50,15 @@ function Comment(props) {
                   postId={props.postId}
                   key={index}
                 />
+                
                 <ReplyComment
                   refreshFunction={props.refreshFunction}
                   commentList={props.commentList}
-                  parentCommentId={comment._id}
+                  parentCommentId={comment.docid}
                   postId={props.postId}
                   key={index}
                 />
+
               </React.Fragment>
             )
         )}

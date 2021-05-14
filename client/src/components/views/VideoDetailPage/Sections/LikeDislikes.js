@@ -27,7 +27,7 @@ function LikeDislikes(props) {
                     setLikes(response.data.likes.length)
 
                     //if I already click this like button or not 
-                    response.data.likes.map(like => {
+                    response.data.likes.fireach(like => {
                         if (like.userId === props.userId) {
                             setLikeAction('liked')
                         }
@@ -45,7 +45,7 @@ function LikeDislikes(props) {
                     setDislikes(response.data.dislikes.length)
 
                     //if I already click this like button or not 
-                    response.data.dislikes.map(dislike => {
+                    response.data.dislikes.foreach(dislike => {
                         if (dislike.userId === props.userId) {
                             setDislikeAction('disliked')
                         }
@@ -55,7 +55,7 @@ function LikeDislikes(props) {
                 }
             })
 
-    }, [])
+    }, [])//eslint-disable-line
     const onLike = () => {
 
         if (LikeAction === null) {

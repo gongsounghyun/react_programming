@@ -1,79 +1,139 @@
 const express = require('express');
 const router = express.Router();
-const { Video } = require("../models/Video");
-const { Subscriber } = require("../models/Subscriber");
-
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg")
+const { firestore, firebase } = require('../firebase');
+const del = require('del');
+
 
 let storge = multer.diskStorage({
-    destination: (req, res, cb) => { // 파일을 어디에 저장할지 설명
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {  // 
-        cb(null, `${Date.now()}_${file.originalname}`);
-    },
-    fileFilter:(req, file, cb) => {
-        const ext = path.extname(file.originalname)
-        if(ext !== '.mp4'|| ext !== '.png'){
-            return cb(res.status(400).end('only jpg, png, mp4. is allowed'), false);
-        }
-        cb(null, true);
+  destination: (req, res, cb) => { // 파일을 어디에 저장할지 설명
+    cb(null, "uploads/videos");
+  },
+  filename: (req, file, cb) => {  // 
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname)
+    if (ext !== '.mp4' || ext !== '.png') {
+      return cb(res.status(400).end('only jpg, png, mp4. is allowed'), false);
     }
+    cb(null, true);
+  }
 });
 
-const upload = multer({ storage : storge }).single("file"); // single 하나의 파일만 가능
+const upload = multer({ storage: storge }).single("file"); // single 하나의 파일만 가능
 
 //=================================
 //             Video
 //=================================
+router.post("/uploadVideo", (req, res) => {
 
-router.post("/uploadVideo", (req, res)=> {
-    //비디오 정보들을 저장한다.
-    const video = new Video(req.body);
-    video.save((err, doc) => {
-        if(err) return res.json({ success : false, err})
-        res.status(200).json({ success : true})
-    })
 
-})
+  console.log("req.video : ", req.body);
 
-router.post("/uploadfiles", (req, res)=> {
-    //비디오를 서버에 저장한다.
-    upload(req, res, err => {
-        if(err){
-             return res.json({ success : false, err });
-        }
-        return res.json({ success : true, url : res.req.file.path, filename : res.req.file.filename })
-    })
-})
-
-router.get("/getVideos", (req, res)=> {
-  //비디오를 데이터베이스에서 가져와서 클라이언트에 보낸다.
-  Video.find()//Video collection에있는 모든 데이터들을 찾는다.
-      .populate('writer')//writer에 type으로 Schema.Types.ObjectId라고 지정을 해주었었는데 populate를 걸어줘야 user에있는 모든 데이터들을 들고올 수있다.
-      //populate를 안걸어 줄 경우 writer의 id만 가져온다.
-      .exec((err, videos) => {
-          if(err) return res.status(400).send(err);
-          res.status(200).json({ success : true, videos });
+  //비디오 정보들을 저장한다.
+  firestore.collection('Videos').add({
+    id: req.body.id,
+    name: req.body.name,
+    title: req.body.title,
+    description: req.body.description,
+    url: req.body.url,
+    image: req.body.image,
+    thumbnail: req.body.thumbnail,
+    duration: req.body.duration,
+    view: req.body.view,
+  }).then(function (doc) {
+    console.log("newUSer : " + doc.id)
+    setTimeout(() => {
+      del(['uploads/thumbnails/*']).then(paths => {
+        console.log('thumbnails is delete : \n', paths.join('\n'));
       })
+    }, 4000);
+    return res.status(200).json({ success: true })
+  }).catch(function (error) {
+    return res.status(200).json({ success: false, error })
+  });
+})
+
+router.post("/uploadfiles", (req, res) => {
+  //비디오를 서버에 저장한다.
+  console.log("파일정보 : ", req.files);
+  upload(req, res, err => {
+    if (err) { return res.json({ success: false, err }) }
+    return res.json({ success: true, url: res.req.file.path, filename: res.req.file.filename })
+  })
+})
+
+
+router.get("/getVideos", (req, res) => {
+  //비디오를 데이터베이스에서 가져와서 클라이언트에 보낸다.
+  const videoData = [];
+  firestore.collection('Videos').get()
+    .then(docs => {
+      docs.forEach(function (doc) {
+        videoData.push({
+          docid: doc.id,
+          id: doc.data().id,
+          name: doc.data().name,
+          title: doc.data().title,
+          description: doc.data().description,
+          url: doc.data().url,
+          image: doc.data().image,
+          thumbnail : doc.data().thumbnail,
+          duration : doc.data().duration,
+          view : doc.data().view,
+        }),
+          console.log('videoData : ', videoData)
+      })
+      res.status(200).json({ success: true, videoData })
+    })
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
+    })
 })
 
 router.post("/getVideoDetail", (req, res) => {
-  Video.findOne({ _id: req.body.videoId }) //id를 이용해서 찾고 클라이언트에서 보낸 비디오 아이디를 찾는다.
-    .populate("writer") // 모든 정보를 가져오게 하기 위해서
-    .exec((err, videoDetail) => {
-      if (err) return res.status(400).send(err);
-      return res.status(200).json({ success: true, videoDetail });
-    });
+  console.log('req.body.videoId : ', req.body.videoId)
+  firestore.collection('Videos').doc(req.body.videoId).get()
+  .then(function(docs){
+    console.log('doc.data() : ', docs.data());
+    return res.status(200).json({ success: true, videoDetail : docs.data() });
+  })
+  .catch(function(err){
+    if (err) return res.status(400).send(err);
+  })
 });
 
+router.post("/addViewCount", (req, res) => {
+  const upcount = firebase.firestore.FieldValue.increment(+1);
+  let viewco = null;
+  let seviewco = null;
+  firestore.collection('Videos').doc(req.body.videoId).get()
+    .then(function (docs) {
+      console.log("videoIdData : ", docs.data().view + 1)
+      viewco = docs.data().view;
+      console.log("viewcount : ", viewco+1)
+    });
+  seviewco = viewco+1;
+  firestore.collection('Videos').doc(req.body.videoId)
+  .update({
+    "view" : upcount
+  })
+  .then(function(doc){
+    return res.status(200).json({ success: true });
+  })
+});
+
+
+
+/*
 
 router.post("/getSubscriptionVideos", (req, res) => {
   //자신의 아이디를 가지고 구독하는 사람들을 찾는다.
   Subscriber.find({ userFrom: req.body.userFrom }).exec(
-    (err, subscriberInfo) => {
+    (err, subscriberInfo) s=> {
       console.log(subscriberInfo);
       if (err) return res.status(400).send(err);
 
@@ -92,50 +152,45 @@ router.post("/getSubscriptionVideos", (req, res) => {
     }
   );
 });
-
-
+*/
 router.post("/thumbnail", (req, res) => {
-    //썸네일 생성 하고 비디오 러닝타임도 가져오는 api
-  
-    let fileDuration = "";
-    let filePath = "";
-    //비디오 정보 가져오기
-    ffmpeg.ffprobe(req.body.url, function (err, metadata) {
-      //url을 받으면 해당 비디오에대한 정보가 metadata에담김
-      console.log(metadata); //metadata안에담기는 모든정보들 체킹
-      fileDuration = metadata.format.duration; //동영상길이대입
-    });
-    //썸네일 생성
-    ffmpeg(req.body.url) //클라이언트에서보낸 비디오저장경로
-      .on("filenames", function (filenames) {
-        //해당 url에있는 동영상을 밑에 스크린샷옵션을 기반으로
-        //캡처한후 filenames라는 이름에 파일이름들을 저장
-        console.log("will generate " + filenames.join(","));
-        console.log("filenames:", filenames);
-  
-        filePath = "uploads/thumbnails/" + filenames[0];
-      })
-      .on("end", function () {
-        console.log("Screenshots taken");
-        return res.json({
-          success: true,
-          url: filePath,
-          fileDuration: fileDuration,
-        });
-        //fileDuration :비디오 러닝타임
-      })
-      .on("error", function (err) {
-        console.log(err);
-        return res.json({ success: false, err });
-      })
-      .screenshots({
-        //Will take screenshots at 20% 40% 60% and 80% of the video
-        count: 3,
-        folder: "uploads/thumbnails",
-        size: "320x240",
-        //'%b':input basename(filename w/o extension) = 확장자제외파일명
-        filename: "thumbnail-%b.png",
-      });
+  let fileDuration = "";
+  let filePath = "";
+  let name = "";
+  const metadata = "";
+  ffmpeg.ffprobe(req.body.url, function (err, metadata) {
+    console.log(metadata);
+    fileDuration = metadata.format.duration;
   });
-
+  ffmpeg(req.body.url)
+    .on("filenames", function (filenames) {
+      console.log("will generate " + filenames.join(","));
+      console.log("filenames:", filenames);
+      name = filenames[0];
+      const metadata = "";
+      filePath = "uploads/thumbnails/" + filenames[0];
+    })
+    .on("end", function () {
+      console.log("Screenshots taken");
+      del(['uploads/videos/*']).then(paths => {
+        console.log('video is delete : \n', paths.join('\n'));
+      })
+      return res.json({
+        success: true,
+        url: filePath,
+        names: name,
+        fileDuration: fileDuration,
+      })
+    })
+    .on("error", function (err) {
+      console.log(err);
+      return res.json({ success: false, err });
+    })
+    .screenshots({
+      count: 1,
+      folder: "uploads/thumbnails",
+      size: "320x240",
+      filename: "thumbnail-%b.jpg",
+    });
+});
 module.exports = router;

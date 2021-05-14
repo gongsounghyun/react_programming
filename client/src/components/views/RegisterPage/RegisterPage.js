@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { registerUser } from "../../../_actions/user_actions";
 import { useDispatch } from "react-redux";
+import {firestore} from '../../../firebase';
 
 import {
   Form,
@@ -11,6 +12,15 @@ import {
   Button,
 } from 'antd';
 
+let teskdata = [];
+
+firestore.collection('Users').get()
+.then((docs) => {
+  docs.forEach((doc) => {
+    teskdata.push({id : doc.id, email : doc.data().email, password : doc.data().password})
+  });
+  console.log(teskdata);
+})
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -89,12 +99,10 @@ function RegisterPage(props) {
           values,
           touched,
           errors,
-          dirty,
           isSubmitting,
           handleChange,
           handleBlur,
           handleSubmit,
-          handleReset,
         } = props;
         return (
           <div className="app">

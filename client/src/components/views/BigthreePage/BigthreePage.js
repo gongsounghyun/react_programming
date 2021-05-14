@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaCode } from "react-icons/fa";
-import { Avatar, Col, Typography, Row, Button, Form, message, Input, Icon, Card} from 'antd';
+import { Avatar, Col, Typography, Row, Button, Form, message, Input, Card} from 'antd';
 import moment from 'moment';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -9,8 +8,6 @@ import { withRouter } from "react-router-dom";
 
 const { Title } = Typography;
 const { Meta } = Card;
-
-const { TextArea} = Input;
 
 function BigthreePage(props) {
 

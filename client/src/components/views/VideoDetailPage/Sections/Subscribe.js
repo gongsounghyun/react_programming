@@ -32,7 +32,7 @@ function Subscribe(props) {
             }
         })
 
-    }, [])
+    }, [])//eslint-disable-line
 
 
     const onSubscribe = () => {

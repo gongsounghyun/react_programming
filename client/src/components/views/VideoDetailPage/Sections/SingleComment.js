@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Comment, Avatar, Button, Input } from 'antd';
+import { Comment, Avatar} from 'antd';
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import LikeDislikes from './LikeDislikes';
-
-const { TextArea } = Input;
 
 function SingleComment(props) {
   const [OpenReply, setOpenReply] = useState(false);
@@ -16,14 +14,16 @@ function SingleComment(props) {
     event.preventDefault();
     const variables = {
       content: CommentValue,
-      writer: user.userData._id,
+      name: user.userData.name,
       postId: props.postId,
-      responseTo: props.comment._id,
+      image : user.userData.image,
+      responseTo: props.comment.docid,
     };
     Axios.post('/api/comment/saveComment', variables).then((response) => {
         if (response.data.success) {
+          console.log(response.data.recoment)
           setCommentValue(''); //저장후 빈칸으로 만들기 위해
-          props.refreshFunction(response.data.result);
+          props.refreshFunction(response.data.recoment);
           setOpenReply(false); //엔터 입력후 댓글창 자동으로 닫는기능
         } else {
           alert('커멘트를 저장하지 못했습니다.');
@@ -46,8 +46,8 @@ function SingleComment(props) {
     <div>
       <Comment
         actions={actions}
-        author={props.comment.writer.name}
-        avatar={<Avatar src={props.comment.writer.image} alt />}
+        author={props.comment.name}
+        avatar={<Avatar src={props.comment.image} alt />}
         content={<p>{props.comment.content}</p>}
       />
       {OpenReply && ( //openReply값이 true일때만 대댓글창을 보이게만듬

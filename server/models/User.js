@@ -35,7 +35,7 @@ const userSchema = mongoose.Schema({
     }
 })
 
-
+// 비밀번호 암호화 나중에 user의 레지스터 부분에 옮겨 적는다.
 userSchema.pre('save', function( next ) {
     var user = this;
     

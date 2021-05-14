@@ -14,6 +14,7 @@ import imageUpload from './views/ImageUpload/ImageUpload';
 import imageLandingPage from './views/ImageLandingPage/ImageLandingPage';
 import FrontPage from './views/FrontPage/FrontPage';
 import BigthreePage from './views/BigthreePage/BigthreePage'
+import ImageDetail from './views/ImageDetailPage/ImageDetailPage'
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -35,6 +36,8 @@ function App() {
           <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, true)} />
           <Route exact path="/subscription" component={Auth(SubscriptionPage, null)} />
           <Route exact path="/bigthree" component={Auth(BigthreePage, null)} />
+          <Route exact path="/image/:imageId" component={Auth(ImageDetail, null)} />
+
 
         </Switch>
       </div>

@@ -5,6 +5,23 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
+import {firestore} from '../../../firebase';
+
+let teskdata = [];
+
+firestore.collection('Users').get()
+.then((docs) => {
+  docs.forEach((doc) => {
+    teskdata.push({
+      id : doc.id, 
+      email : doc.data().email, 
+      password : doc.data().password, 
+      token : doc.data().token, 
+      tokenExp : doc.data().tokenExp
+    })
+  });
+  console.log(teskdata);
+})
 
 const { Title } = Typography;
 
@@ -45,6 +62,7 @@ function LoginPage(props) {
           dispatch(loginUser(dataToSubmit))
             .then(response => {
               if (response.payload.loginSuccess) {
+                console.log(response.payload.loginSuccess);
                 window.localStorage.setItem('userId', response.payload.userId);
                 if (rememberMe === true) {
                   window.localStorage.setItem('rememberMe', values.id);
@@ -71,12 +89,10 @@ function LoginPage(props) {
           values,
           touched,
           errors,
-          dirty,
           isSubmitting,
           handleChange,
           handleBlur,
           handleSubmit,
-          handleReset,
         } = props;
         return (
           <div className="app">

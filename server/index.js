@@ -14,14 +14,7 @@ const config = require("./config/key");
 //   .then(() => console.log("DB connected"))
 //   .catch(err => console.error(err));
 
-const mongoose = require("mongoose");
-const connect = mongoose.connect(config.mongoURI,
-  {
-    useNewUrlParser: true, useUnifiedTopology: true,
-    useCreateIndex: true, useFindAndModify: false
-  })
-  .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
+//require('./mongdb');
 
 app.use(cors())
 
