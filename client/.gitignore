@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # 데이터베이스
-boilerplate-mern-stack-master/client/src/firebase.js
+/src/firebase.js
 
 # dependencies
 /node_modules
