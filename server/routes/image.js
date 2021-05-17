@@ -3,7 +3,7 @@ const router = express.Router();
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg");
-const { firestore } = require('../firebase');
+const { firestore, firebase } = require('../firebase');
 
 let storge = multer.diskStorage({
     destination: (req, res, cb) => { // 파일을 어디에 저장할지 설명
@@ -26,6 +26,18 @@ const upload = multer({ storage : storge }).single("file"); // single 하나의 
 //=================================
 //             Image
 //=================================
+
+router.post("/addViewCount", (req, res) => {
+  const upcount = firebase.firestore.FieldValue.increment(+1);
+  
+  firestore.collection('Images').doc(req.body.imageId)
+  .update({
+    "view" : upcount
+  })
+  .then(function(doc){
+    return res.status(200).json({ success: true });
+  })
+});
 
 router.post("/uploadImage", (req, res)=> {
   firestore.collection('Images').add({
@@ -69,7 +81,7 @@ router.get("/getImages", (req, res) => {
           name : doc.data().name
         });
       })
-      console.log("이미지 겟 데이터 : ", imageData)
+      console.log("이미지 갯 데이터 : ", imageData)
       res.status(200).json({ success : true, image : imageData });
     })
     .catch(function(err){
@@ -77,16 +89,29 @@ router.get("/getImages", (req, res) => {
     })
 })
 
-/*//이미지 디테일 페이지 만들어야 함
-router.post("/getVideoDetail", (req, res) => {
-  Video.findOne({ _id: req.body.videoId }) //id를 이용해서 찾고 클라이언트에서 보낸 비디오 아이디를 찾는다.
-    .populate("writer") // 모든 정보를 가져오게 하기 위해서
-    .exec((err, videoDetail) => {
+//이미지 디테일 페이지 만들어야 함
+router.post("/getImageDetail", (req, res) => {
+  const imageDetail = [];
+  firestore.collection('Images').doc(req.body.imageId).get()
+  .then(function(docs){
+    console.log('doc.data() : ', docs.data());
+    imageDetail.push({
+      docid: docs.id,
+      name: docs.data().name,
+      title: docs.data().title,
+      description: docs.data().description,
+      url: docs.data().url,
+      image: docs.data().image,
+      view: docs.data().view,
+    })
+    return res.status(200).json({ success: true, imageDetail: docs.data() });
+  })
+    .catch(function (err) {
       if (err) return res.status(400).send(err);
-      return res.status(200).json({ success: true, videoDetail });
-    });
+  })
 });
 
+/*
 //구독하는 사람의 파일 만들어야 함
 router.post("/getSubscriptionVideos", (req, res) => {
   //자신의 아이디를 가지고 구독하는 사람들을 찾는다.

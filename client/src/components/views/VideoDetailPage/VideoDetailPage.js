@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Avatar, List } from 'antd';
 import Axios from 'axios';
-import Subscribe from './Sections/Subscribe';
+import Follow from './Sections/Follow';
 import Comment from './Sections/Comment';
-import LikeDislikes from './Sections/LikeDislikes';
-import { firestore } from '../../../firebase';
+import Heart from './Sections/Heart';
 
 function VideoDetailPage(props) {
   const videoId = props.match.params.videoId;
@@ -13,8 +12,6 @@ function VideoDetailPage(props) {
   const variable = { videoId: videoId };
   const [VideoDetail, setVideoDetail] = useState([]);
   const [Comments, setComments] = useState([]);
-  const [ViewCount, setViewCount] = useState(null)
-
 
   useEffect(() => {
     Axios.post('/api/video/addViewCount', variable).then((response) => {
@@ -23,13 +20,12 @@ function VideoDetailPage(props) {
         Axios.post('/api/video/getVideoDetail', variable).then((response) => {
           if (response.data.success) {
             setVideoDetail(response.data.videoDetail);
-            console.log('aa : ', response.data.videoDetail.view);
           } else {
             alert('비디오 정보를 가져오길 실패했습니다.');
           }
         });
 
-        Axios.post('/api/comment/getComments', variable).then((response) => {
+        Axios.post('/api/videocomment/getComments', variable).then((response) => {
           if (response.data.success) {
             console.log("댓글 : ", response.data.comments);
             setComments(response.data.comments);
@@ -49,12 +45,9 @@ function VideoDetailPage(props) {
   };
 
   if (VideoDetail) {
-    //witer를 서버에서 가져오기전에 페이지를 렌더링 할려고해서
-    //VideoDetail.writer.image 부분에서 type error가 발생한다.
-
-    console.log('VideoDetail : ', VideoDetail);
-    const subscribeButton = VideoDetail.docid !== localStorage.getItem('userId') && 
-    <Subscribe userTo = {VideoDetail.docid} userFrom = { localStorage.getItem('userId') } /> 
+    //console.log('VideoDetail.id : ', VideoDetail.id);
+    const followButton = VideoDetail.id !== localStorage.getItem('userId') && 
+    <Follow userTo = {VideoDetail.id} userFrom = { localStorage.getItem('userId') } /> 
 
     return (
       <Row gutter={(16, 16)}>
@@ -65,8 +58,8 @@ function VideoDetailPage(props) {
               src={`${VideoDetail.url}`}
               controls
             />
-            <List.Item actions = { [ <LikeDislikes video userId= { localStorage.getItem('userId') } 
-              videoId ={ videoId } />, subscribeButton ] }>
+            <List.Item actions = { [ <Heart video userId= { localStorage.getItem('userId') } 
+              videoId ={ videoId } />, followButton ] }>
               <List.Item.Meta
                 avatar={<Avatar src={VideoDetail.image} />}
                 title={VideoDetail.title}

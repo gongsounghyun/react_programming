@@ -6,11 +6,12 @@ const { firestore } = require('../firebase');
 
 
 //=================================
-//             Comment
+//             videoComment
 //=================================
 
 router.post("/saveComment", (req, res)=> {
   firestore.collection('VideoComments').add({
+    id : req.body.id,
     content: req.body.content,
     name: req.body.name,
     postId: req.body.postId,
@@ -43,6 +44,7 @@ router.post("/getComments", (req, res) => {
     docs.forEach(function(doc){
       commentdata.push({
         docid : doc.id,
+        id: doc.data().id,
         name : doc.data().name,
         content : doc.data().content,
         responseTo : doc.data().responseTo,
@@ -63,15 +65,6 @@ router.post("/getComments", (req, res) => {
   .catch(function(err){
     if (err) return res.status(400).send(err);
   })
-
-  /*
-    Comment.find({ postId: req.body.videoId })
-      .populate("writer")
-      .exec((err, comments) => {
-        if (err) return res.status(400).send(err);
-        res.status(200).json({ success: true, comments });
-      });
-      */
-  });
+});
 
 module.exports = router;

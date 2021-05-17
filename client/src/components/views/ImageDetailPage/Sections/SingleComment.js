@@ -20,7 +20,7 @@ function SingleComment(props) {
       image : user.userData.image,
       responseTo: props.comment.docid,
     };
-    Axios.post('/api/videocomment/saveComment', variables).then((response) => {
+    Axios.post('/api/imagecomment/saveComment', variables).then((response) => {
         if (response.data.success) {
           console.log(response.data.recoment)
           setCommentValue(''); //저장후 빈칸으로 만들기 위해

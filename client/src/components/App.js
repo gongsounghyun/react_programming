@@ -36,7 +36,7 @@ function App() {
           <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, true)} />
           <Route exact path="/subscription" component={Auth(SubscriptionPage, null)} />
           <Route exact path="/bigthree" component={Auth(BigthreePage, null)} />
-          <Route exact path="/image/:imageId" component={Auth(ImageDetail, null)} />
+          <Route exact path="/image/:imageId" component={Auth(ImageDetail, true)} />
 
 
         </Switch>

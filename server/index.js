@@ -6,16 +6,6 @@ const cors = require('cors')
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
-const config = require("./config/key");
-
-// const mongoose = require("mongoose");
-// mongoose
-//   .connect(config.mongoURI, { useNewUrlParser: true })
-//   .then(() => console.log("DB connected"))
-//   .catch(err => console.error(err));
-
-//require('./mongdb');
-
 app.use(cors())
 
 //to not get any deprecation warning or error
@@ -29,9 +19,10 @@ app.use(cookieParser());
 app.use('/api/users', require('./routes/users'));
 app.use('/api/video', require('./routes/video'));
 app.use('/api/image', require('./routes/image'));
-app.use('/api/subscribe', require('./routes/subscribe'));
-app.use("/api/comment", require("./routes/comment"));
-app.use("/api/like", require("./routes/like"));
+app.use('/api/follow', require('./routes/follow'));
+app.use("/api/videocomment", require("./routes/videocomment"));
+app.use("/api/imagecomment", require("./routes/imagecomment"));
+app.use("/api/heart", require("./routes/heart"));
 app.use("/api/bigthree", require("./routes/bigthree"));
 
 

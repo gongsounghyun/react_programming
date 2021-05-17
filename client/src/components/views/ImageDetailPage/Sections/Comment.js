@@ -5,7 +5,7 @@ import SingleComment from './SingleComment';
 import ReplyComment from './ReplyComment';
 
 function Comment(props) {
-  const videoId = props.postId;
+  const imageId = props.postId;
   const [commentValue, setcommentValue] = useState('');
   const user = useSelector((state) => state.user);
 
@@ -19,11 +19,11 @@ function Comment(props) {
       id : user.userData._id,
       content: commentValue,
       name: user.userData.name,
-      postId: videoId,
+      postId: imageId,
       image : user.userData.image,
       responseTo: null,
     };
-    Axios.post('/api/videocomment/saveComment', variables).then((response) => {
+    Axios.post('/api/imagecomment/saveComment', variables).then((response) => {
       if (response.data.success) {
         console.log("comment : ", response.data.recoment);
         setcommentValue("");
@@ -36,7 +36,7 @@ function Comment(props) {
   return (
     <div>
       <br />
-      <p>Replies</p>
+      <p>댓글 목록</p>
       <hr />
 
       {/* Comment Lists */}

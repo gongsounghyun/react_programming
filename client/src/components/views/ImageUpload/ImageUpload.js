@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import {Typography, Button, Form, message, Input, Icon, Progress} from 'antd';
 import Dropzone from 'react-dropzone';

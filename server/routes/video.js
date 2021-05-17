@@ -45,7 +45,6 @@ router.post("/uploadVideo", (req, res) => {
     duration: req.body.duration,
     view: req.body.view,
   }).then(function (doc) {
-    console.log("newUSer : " + doc.id)
     setTimeout(() => {
       del(['uploads/thumbnails/*']).then(paths => {
         console.log('thumbnails is delete : \n', paths.join('\n'));
@@ -95,28 +94,28 @@ router.get("/getVideos", (req, res) => {
 })
 
 router.post("/getVideoDetail", (req, res) => {
-  console.log('req.body.videoId : ', req.body.videoId)
+  const videoDetail = [];
   firestore.collection('Videos').doc(req.body.videoId).get()
   .then(function(docs){
-    console.log('doc.data() : ', docs.data());
-    return res.status(200).json({ success: true, videoDetail : docs.data() });
+    videoDetail.push({
+      id:docs.data().id,
+      docid: docs.id,
+      name: docs.data().name,
+      title: docs.data().title,
+      description: docs.data().description,
+      url: docs.data().url,
+      image: docs.data().image,
+      view: docs.data().view,
+    })
+    return res.status(200).json({ success: true, videoDetail: docs.data() });
   })
-  .catch(function(err){
-    if (err) return res.status(400).send(err);
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
   })
 });
 
 router.post("/addViewCount", (req, res) => {
   const upcount = firebase.firestore.FieldValue.increment(+1);
-  let viewco = null;
-  let seviewco = null;
-  firestore.collection('Videos').doc(req.body.videoId).get()
-    .then(function (docs) {
-      console.log("videoIdData : ", docs.data().view + 1)
-      viewco = docs.data().view;
-      console.log("viewcount : ", viewco+1)
-    });
-  seviewco = viewco+1;
   firestore.collection('Videos').doc(req.body.videoId)
   .update({
     "view" : upcount
@@ -125,8 +124,6 @@ router.post("/addViewCount", (req, res) => {
     return res.status(200).json({ success: true });
   })
 });
-
-
 
 /*
 

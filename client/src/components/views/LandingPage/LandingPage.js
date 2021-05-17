@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Card, Avatar, Col, Typography, Row } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
-import { firestore, storage, firebase } from '../../../firebase';
 
 const { Title } = Typography;
 const { Meta } = Card;
 function LandingPage() {
 
     const [Videos, setVideos] = useState([])
-    const [viewcount, setviewcount] = useState([])
 
     useEffect(() => { // dom이 로드되자마자 무엇을 할껏인지
         axios.get('/api/video/getVideos')
@@ -24,18 +22,6 @@ function LandingPage() {
             })
     }, []) // []안이 비어있으면 업데이트 될때 한번만 실행 아니면 계속 실행
 
-    const viewCount = (e) => {
-        console.log(e.videourl)
-        const data = [];
-        firestore.collection('Videos').doc(e.videourl).get()
-        .then(function(docs){
-            setviewcount(docs.data().view+1)
-        })
-        firestore.collection('Videos').doc(e.videourl)
-        .update({"view" : viewcount})
-    }
-
-
     const renderCards = Videos.map((video, index) => {
 
         var minutes = Math.floor(video.duration / 60);
@@ -46,7 +32,7 @@ function LandingPage() {
             xs:가장작은 크기일때는 24그리드를 쓰겠다. 총24그리드 
             33번째 줄 비디오 디테일 클릭링크, 비디오아이디를 가져온다. >*/}
             <div style={{ position: 'relative' }}>
-                <a href={`/video/${video.docid}`} onClick = {() => viewCount({videourl : video.docid}, console.log(video.docid))}>
+                <a href={`/video/${video.docid}`}>
                 <video style={{ width: '100%' , height: '200px' }} src={`${video.url}`} controls/>
                     <div className=" duration"
                         style={{

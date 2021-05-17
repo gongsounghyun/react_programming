@@ -28,7 +28,7 @@ function ImageLandingPage() {
             33번째 줄 비디오 디테일 클릭링크, 비디오아이디를 가져온다. */}
             <div style={{ position: 'relative', textAlign: 'center', background : 'black'}}>
                 <a href={`image/${image.docid}`} > 
-                <img style={{ width: 'auto', height : '200px', textAlign: 'center'}} alt="thumbnail" src={`${image.url}`} />
+                <img style={{ width: 'auto', height : '180px', textAlign: 'center'}} alt="thumbnail" src={`${image.url}`} />
                 </a>
             </div><br />
             <Meta // 동그랗게 나오는 유저이미지

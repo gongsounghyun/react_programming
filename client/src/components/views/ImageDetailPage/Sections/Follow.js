@@ -3,8 +3,8 @@ import Axios from 'axios'
 
 function Subscribe(props) {
 
-    const [SubscribeNumber, setSubscribeNumber] = useState(0)
-    const [Subscribed, setSubscribed] = useState(false) // 거짓은 구독 x 참은 구독
+    const [FollowNumber, setFollowNumber] = useState(0)
+    const [Followed, setFollowed] = useState(false) // 거짓은 구독 x 참은 구독
 
     useEffect(() => {
 
@@ -13,7 +13,7 @@ function Subscribe(props) {
         Axios.post('/api/subscribe/subscribeNumber', variable)
         .then(response => {
             if(response.data.success){
-                setSubscribeNumber(response.data.subscribeNumber);
+                setFollowNumber(response.data.subscribeNumber);
             }else{
                 alert('구독자 수 정보를 받아오지 못했습니다.')
             }
@@ -26,7 +26,7 @@ function Subscribe(props) {
         Axios.post('/api/subscribe/subscribed', subscribedvariable)
         .then(response => {
             if(response.data.success){
-                setSubscribed(response.data.subscribed)
+                setFollowed(response.data.subscribed)
             }else{
                 alert('정보를 받아오지 못했습니다.');
             }
@@ -35,18 +35,18 @@ function Subscribe(props) {
     }, [])//eslint-disable-line
 
 
-    const onSubscribe = () => {
+    const onFollow = () => {
         let subscribedVariable = {
         userTo: props.userTo,
         userFrom: props.userFrom,
         };
-        if (Subscribed) {
+        if (Followed) {
         //이미구독중이라면
         Axios.post('/api/subscribe/unSubscribe', subscribedVariable).then(
             (response) => {
             if (response.data.success) {
-                setSubscribeNumber(SubscribeNumber - 1);
-                setSubscribed(!Subscribed);
+                setFollowNumber(FollowNumber - 1);
+                setFollowed(!Followed);
             } else {
                 alert('구독 취소 하는데 실패 했습니다.');
             }
@@ -57,8 +57,8 @@ function Subscribe(props) {
             Axios.post('/api/subscribe/Subscribe', subscribedVariable).then(
                 (response) => {
                     if (response.data.success) {
-                        setSubscribeNumber(SubscribeNumber + 1);
-                        setSubscribed(!Subscribed);
+                        setFollowNumber(FollowNumber + 1);
+                        setFollowed(!Followed);
                     } else {
                     alert('구독 하는데 실패 했습니다.');
                     }
@@ -71,16 +71,15 @@ function Subscribe(props) {
         <div>
             <button 
             style = {{
-                backgroundColor: `${Subscribed ? '#AAAAAA' : '#CC0000'}`, 
+                backgroundColor: `${Followed ? '#AAAAAA' : '#CC0000'}`, 
                 borderRadius : '4px',
                 color : 'white', 
                 padding : '10px 16px', 
                 fontWeight : '500', 
-                fontSize : '1rm', 
-                textTransform : 'uppercase'}}
-            onClick = { onSubscribe }
+                fontSize : '1rm', }}
+            onClick = { onFollow }
             >
-            {SubscribeNumber} {Subscribed ? 'Subscribed' : 'Subscribe'}
+            {FollowNumber} {Followed ? 'Followed' : 'Follow'}
             </button>
         </div>
     )
