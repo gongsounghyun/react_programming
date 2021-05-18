@@ -47,10 +47,14 @@ function ImageDetailPage(props) {
   if (ImageDetail) {
     //witer를 서버에서 가져오기전에 페이지를 렌더링 할려고해서
     //VideoDetail.writer.image 부분에서 type error가 발생한다.
+    var followdata = {
+      userTo: ImageDetail.id,
+      userFrom:localStorage.getItem('userId')
+    };
 
     console.log('ImageDetail : ', ImageDetail);
-    const subscribeButton = ImageDetail.docid !== localStorage.getItem('userId') && 
-    <Follow userTo = {ImageDetail.docid} userFrom = { localStorage.getItem('userId') } /> 
+    const subscribeButton = ImageDetail.id !== localStorage.getItem('userId') && 
+    <Follow followdata={followdata} /> 
 
     return (
       <Row gutter={(16, 16)}>

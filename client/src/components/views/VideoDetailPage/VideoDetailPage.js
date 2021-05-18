@@ -45,9 +45,13 @@ function VideoDetailPage(props) {
   };
 
   if (VideoDetail) {
+    var followdata = {
+      userTo: VideoDetail.id,
+      userFrom:localStorage.getItem('userId')
+    };
     //console.log('VideoDetail.id : ', VideoDetail.id);
     const followButton = VideoDetail.id !== localStorage.getItem('userId') && 
-    <Follow userTo = {VideoDetail.id} userFrom = { localStorage.getItem('userId') } /> 
+    <Follow followdata = {followdata} /> 
 
     return (
       <Row gutter={(16, 16)}>

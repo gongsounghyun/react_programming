@@ -36,17 +36,28 @@ router.post("/followed", (req, res)=> {
     if(err) return res.status(400).send(err)
   })
 })
-/*
+
 router.post("/unfollow", (req, res) => {
-    Subscriber.findOneAndDelete({
+
+  var deledata = firestore.collection('Follows').where('userTo', '==', req.body.userTo).where('userFrom', '==', req.body.userFrom)
+  deledata.get().then(function (docs) {
+    docs.forEach(function (doc) {
+      doc.ref.delete();
+    })
+    res.status(200).json({ success: true })
+  })
+    .catch(function (err) {
+      if (err) return res.status(400).json({ success: false, err })
+    })
+  /*Subscriber.findOneAndDelete({
       userTo: req.body.userTo,
       userFrom: req.body.userFrom,
     }).exec((err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
       res.status(200).json({ success: true, doc });
-    });
+    });*/
 });
-*/
+
 router.post("/follow", (req, res) => {
   firestore.collection('Follows').add({
     userTo: req.body.userTo,

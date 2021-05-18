@@ -2,41 +2,35 @@ import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 
 function Follow(props) {
-    console.log("props.userTo:",props)
     const [FollowNumber, setFollowNumber] = useState(0)
     const [Followed, setFollowed] = useState(false) // 거짓은 구독 x 참은 구독
-    const [id, setid] = useState(null)
 
-    useEffect(() => {
-        if (props) {
-            setid(props.userTo)
-            let variable = { userTo: props.userTo }
-            Axios.post('/api/follow/followNumber', variable)
-                .then(response => {
-                    if (response.data.success) {
-                        setFollowNumber(response.data.followNumber);
-                    } else {
-                        alert('구독자 수 정보를 받아오지 못했습니다.')
-                    }
-                })
-            let followdvariable = {
-                userTo: props.userTo,
-                userFrom: props.userFrom
+    var variable = { userTo: props.followdata.userTo }
+    Axios.post('/api/follow/followNumber', variable)
+        .then(response => {
+            if (response.data.success) {
+                setFollowNumber(response.data.followNumber);
+            } else {
+                alert('구독자 수 정보를 받아오지 못했습니다.')
             }
-            Axios.post('/api/follow/followed', followdvariable)
-                .then(response => {
-                    if (response.data.success) {
-                        setFollowed(response.data.result)
-                    } else {
-                        alert('정보를 받아오지 못했습니다.');
-                    }
-                })
-        }
-    }, [])//eslint-disable-line
+        })
+    var followdvariable = {
+        userTo: props.followdata.userTo,
+        userFrom: props.followdata.userFrom
+    }
+    Axios.post('/api/follow/followed', followdvariable)
+        .then(response => {
+            if (response.data.success) {
+                setFollowed(response.data.result)
+            } else {
+                alert('정보를 받아오지 못했습니다.');
+            }
+        })
+
     const onFollow = () => {
         let followedVariable = {
-            userTo: props.userTo,
-            userFrom: props.userFrom,
+            userTo: props.followdata.userTo,
+            userFrom: props.followdata.userFrom
         };
         if (Followed) {
             //이미구독중이라면

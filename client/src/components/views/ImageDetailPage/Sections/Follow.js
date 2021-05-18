@@ -6,43 +6,38 @@ function Subscribe(props) {
     const [FollowNumber, setFollowNumber] = useState(0)
     const [Followed, setFollowed] = useState(false) // 거짓은 구독 x 참은 구독
 
-    useEffect(() => {
-
-        let variable = { userTo : props.userTo }
-        
-        Axios.post('/api/subscribe/subscribeNumber', variable)
+    var variable = { userTo: props.followdata.userTo }
+    Axios.post('/api/follow/followNumber', variable)
         .then(response => {
-            if(response.data.success){
-                setFollowNumber(response.data.subscribeNumber);
-            }else{
+            if (response.data.success) {
+                setFollowNumber(response.data.followNumber);
+            } else {
                 alert('구독자 수 정보를 받아오지 못했습니다.')
             }
         })
-        let subscribedvariable = { 
-            userTo : props.userTo, 
-            userFrom : props.userFrom
-        }
+    var followdvariable = {
+        userTo: props.followdata.userTo,
+        userFrom: props.followdata.userFrom
+    }
 
-        Axios.post('/api/subscribe/subscribed', subscribedvariable)
+    Axios.post('/api/follow/followed', followdvariable)
         .then(response => {
-            if(response.data.success){
-                setFollowed(response.data.subscribed)
-            }else{
+            if (response.data.success) {
+                setFollowed(response.data.result)
+            } else {
                 alert('정보를 받아오지 못했습니다.');
             }
         })
 
-    }, [])//eslint-disable-line
-
 
     const onFollow = () => {
-        let subscribedVariable = {
-        userTo: props.userTo,
-        userFrom: props.userFrom,
+        let followedVariable = {
+            userTo: props.followdata.userTo,
+            userFrom: props.followdata.userFrom
         };
         if (Followed) {
         //이미구독중이라면
-        Axios.post('/api/subscribe/unSubscribe', subscribedVariable).then(
+        Axios.post('/api/follow/unfollow', followedVariable).then(
             (response) => {
             if (response.data.success) {
                 setFollowNumber(FollowNumber - 1);
@@ -54,7 +49,7 @@ function Subscribe(props) {
         );
         } else {
         //구독중이 아니라면
-            Axios.post('/api/subscribe/Subscribe', subscribedVariable).then(
+            Axios.post('/api/follow/follow', followedVariable).then(
                 (response) => {
                     if (response.data.success) {
                         setFollowNumber(FollowNumber + 1);

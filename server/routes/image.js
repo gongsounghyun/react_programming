@@ -97,6 +97,7 @@ router.post("/getImageDetail", (req, res) => {
     console.log('doc.data() : ', docs.data());
     imageDetail.push({
       docid: docs.id,
+      id:docs.data().id,
       name: docs.data().name,
       title: docs.data().title,
       description: docs.data().description,
