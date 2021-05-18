@@ -38,7 +38,7 @@ function ImageLandingPage() {
                 title={image.title}
             />
             <span>{image.name} </span><br />
-            <span> {moment(image.createdAt).format("YYYY년 MM월 DD일")} </span>
+            <span> {moment(image.time).format("YYYY년 MM월 DD일")} </span>
             <span> - 조회수 : {image.view}</span>
         </Col>
     })

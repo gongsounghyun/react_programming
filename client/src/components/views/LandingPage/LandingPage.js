@@ -63,7 +63,7 @@ function LandingPage() {
                 title={video.title}
             />
             <span>{video.name} </span><br />
-            <span> {moment(video.createdAt).format("YYYY년 MM월 DD일")} </span>
+            <span> {moment(video.time).format("YYYY년 MM월 DD일")} </span>
             <span> - 조회수 : {video.view}</span>
         </Col>
     })

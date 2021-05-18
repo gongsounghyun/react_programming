@@ -48,6 +48,7 @@ router.post("/uploadImage", (req, res)=> {
     url: req.body.url,
     image: req.body.image,
     view: req.body.view,
+    time: firebase.firestore.FieldValue.serverTimestamp(),
   })
   .then(function(docs){
     res.status(200).json({ success : true})
@@ -78,7 +79,8 @@ router.get("/getImages", (req, res) => {
           id : doc.data().id,
           view : doc.data().view,
           url : doc.data().url,
-          name : doc.data().name
+          name : doc.data().name,
+          time: doc.data().time.toDate(),
         });
       })
       console.log("이미지 갯 데이터 : ", imageData)

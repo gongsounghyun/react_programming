@@ -44,6 +44,7 @@ router.post("/uploadVideo", (req, res) => {
     thumbnail: req.body.thumbnail,
     duration: req.body.duration,
     view: req.body.view,
+    time: firebase.firestore.FieldValue.serverTimestamp(),
   }).then(function (doc) {
     setTimeout(() => {
       del(['uploads/thumbnails/*']).then(paths => {
@@ -83,6 +84,7 @@ router.get("/getVideos", (req, res) => {
           thumbnail : doc.data().thumbnail,
           duration : doc.data().duration,
           view : doc.data().view,
+          time:doc.data().time.toDate(),
         }),
           console.log('videoData : ', videoData)
       })
