@@ -24,6 +24,7 @@ app.use("/api/videocomment", require("./routes/videocomment"));
 app.use("/api/imagecomment", require("./routes/imagecomment"));
 app.use("/api/heart", require("./routes/heart"));
 app.use("/api/bigthree", require("./routes/bigthree"));
+app.use("/api/freeboard", require("./routes/freeboard"));
 
 
 //use this to show the image you have in node js server to client (react js)
