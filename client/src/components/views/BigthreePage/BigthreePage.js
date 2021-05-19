@@ -80,10 +80,6 @@ function BigthreePage(props) {
             message.success('성공적으로 업로드를 했습니다.');
             setTimeout(() => console.log("after"), 3000);
             window.location.reload(true);
-
-
-
-            
         }else{
             alert("실패하셧습니다.");
         }

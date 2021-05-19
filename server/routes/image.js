@@ -99,7 +99,7 @@ router.post("/getImageDetail", (req, res) => {
     console.log('doc.data() : ', docs.data());
     imageDetail.push({
       docid: docs.id,
-      id:docs.data().id,
+      id: docs.data().id,
       name: docs.data().name,
       title: docs.data().title,
       description: docs.data().description,
@@ -109,35 +109,22 @@ router.post("/getImageDetail", (req, res) => {
     })
     return res.status(200).json({ success: true, imageDetail: docs.data() });
   })
-    .catch(function (err) {
-      if (err) return res.status(400).send(err);
+  .catch(function (err) {
+    if (err) return res.status(400).send(err);
   })
 });
 
-/*
-//구독하는 사람의 파일 만들어야 함
-router.post("/getSubscriptionVideos", (req, res) => {
-  //자신의 아이디를 가지고 구독하는 사람들을 찾는다.
-  Subscriber.find({ userFrom: req.body.userFrom }).exec(
-    (err, subscriberInfo) => {
-      console.log(subscriberInfo);
-      if (err) return res.status(400).send(err);
+router.post("/changeurl", (req, res) =>{
+  console.log("req.body.url : ",req.body.url)
+  firestore.collection('Users').doc(req.body.id).update({
+    image:req.body.url
+  })
+  .then(function(doc){
+    res.status(200).json({success : true})
+  })
+  .catch(function(err){
+    if (err) return res.status(400).send(err);
+  })
+})
 
-      let subscribedUser = [];
-
-      subscriberInfo.map((subscriber, index) => {
-        subscribedUser.push(subscriber.userTo);
-      });
-      //찾은 사람들의 비디오를 가지고온다.
-      Video.find({ writer: { $in: subscribedUser } }) //subscribedUser배열안에있는 모든 데이터를 writer에 대입함
-        .populate("writer")
-        .exec((err, videos) => {
-          if (err) return res.status(400).send(err);
-          res.status(200).json({ success: true, videos });
-        });
-    }
-  );
-});
-
-*/
 module.exports = router;

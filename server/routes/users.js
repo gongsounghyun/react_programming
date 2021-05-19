@@ -112,5 +112,18 @@ router.get("/logout", auth, (req, res) => {
     })
 });
 
+router.post("/getData",(req,res)=>{
+    console.log("req.body : ",req.body.idinfo)
+    const info = [];
+    firestore.collection('Users').doc(req.body.idinfo).get()
+    .then(function (docs) {
+        console.log("doc.data() : ", docs.data())
+        return res.status(200).json({ success: true, info: docs.data() });
+    })
+    .catch(function (err) {
+        if (err) return res.status(400).send(err);
+    })
+});
+
 
 module.exports = router;

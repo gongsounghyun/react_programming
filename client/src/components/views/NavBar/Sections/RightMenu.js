@@ -34,7 +34,7 @@ function RightMenu(props) {
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="mypage">
-          <a href="/video/upload">mypage</a>
+          <a href="/Mypage">mypage</a>
         </Menu.Item>
         <Menu.Item key="uploadimage">
           <a href="/image/upload">image</a>
