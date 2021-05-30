@@ -91,6 +91,34 @@ router.get("/getImages", (req, res) => {
     })
 })
 
+router.post("/FollowUser",(req,res)=>{
+  console.log("req.body.User : ",req.body.User);
+  const imageData = [];
+  firestore.collection('Images').where('name','==',req.body.User).get()
+  .then(docs => {
+    docs.forEach(doc => {
+      imageData.push({
+        docid : doc.id,
+        description : doc.data().description,
+        image : doc.data().image,
+        title : doc.data().title,
+        id : doc.data().id,
+        view : doc.data().view,
+        url : doc.data().url,
+        name : doc.data().name,
+        time: doc.data().time.toDate(),
+      });
+    })
+    console.log("data : ",imageData);
+    res.status(200).json({ success: true, imageData })
+  })
+  .catch(err => {
+    if (err) return res.status(400).send(err);
+  })
+})
+
+
+
 router.post("/deleteImages", (req, res) => {
   const imageData = [];
   console.log(req.body);

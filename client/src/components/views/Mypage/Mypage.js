@@ -295,9 +295,8 @@ function Mypage() {
             title:"프로필",
             dataIndex:"image",
             render:(text, list) => (
-            <a href={`/image/${list.docid}`}>
                 <img src={`${list.image}`} width="30px" height="30px"  alt="프로필 이미지" title = "프로필 이미지"/>
-            </a>),//나중에 작성자의 프로필을 보여주는 화면으로 이동할 수 있어야 한다.
+            ),//나중에 작성자의 프로필을 보여주는 화면으로 이동할 수 있어야 한다.
             key:"image",
         },
         {
@@ -328,9 +327,8 @@ function Mypage() {
             title:"프로필",
             dataIndex:"image",
             render:(text, list) => (
-            <a href={`/image/${list.docid}`}>
                 <img src={`${list.image}`} width="30px" height="30px"  alt="프로필 이미지" title = "프로필 이미지"/>
-            </a>),//나중에 작성자의 프로필을 보여주는 화면으로 이동할 수 있어야 한다.
+            ),//나중에 작성자의 프로필을 보여주는 화면으로 이동할 수 있어야 한다.
             key:"image",
         },
         {
