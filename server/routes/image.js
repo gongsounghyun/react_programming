@@ -91,6 +91,83 @@ router.get("/getImages", (req, res) => {
     })
 })
 
+router.post("/deleteImages", (req, res) => {
+  const imageData = [];
+  console.log(req.body);
+  firestore.collection('Images').doc(req.body.id).delete()
+  .then(newlist => {
+    firestore.collection('Images').where('id','==',req.body.userId).get()
+    .then(function (docs) {
+      docs.forEach(function(doc){
+        imageData.push({
+          docid : doc.id,
+          description : doc.data().description,
+          image : doc.data().image,
+          title : doc.data().title,
+          id : doc.data().id,
+          view : doc.data().view,
+          url : doc.data().url,
+          name : doc.data().name,
+          time: doc.data().time.toDate(),
+        });
+      })
+      console.log("이미지 갯 데이터 : ", imageData)
+      res.status(200).json({ success : true, image : imageData });
+    })
+    .catch(function(err){
+      if(err) return res.status(400).send(err);
+    })
+  })
+
+
+  /*const imageData = [];
+  firestore.collection('Images').get()
+    .then(function (docs) {
+      docs.forEach(function(doc){
+        imageData.push({
+          docid : doc.id,
+          description : doc.data().description,
+          image : doc.data().image,
+          title : doc.data().title,
+          id : doc.data().id,
+          view : doc.data().view,
+          url : doc.data().url,
+          name : doc.data().name,
+          time: doc.data().time.toDate(),
+        });
+      })
+      console.log("이미지 갯 데이터 : ", imageData)
+      res.status(200).json({ success : true, image : imageData });
+    })
+    .catch(function(err){
+      if(err) return res.status(400).send(err);
+    })*/
+})
+
+router.post("/getImagelists", (req, res) => {
+  const imageData = [];
+  firestore.collection('Images').where('id','==',req.body.idinfo).get()
+    .then(function (docs) {
+      docs.forEach(function(doc){
+        imageData.push({
+          docid : doc.id,
+          description : doc.data().description,
+          image : doc.data().image,
+          title : doc.data().title,
+          id : doc.data().id,
+          view : doc.data().view,
+          url : doc.data().url,
+          name : doc.data().name,
+          time: doc.data().time.toDate(),
+        });
+      })
+      res.status(200).json({ success : true, image : imageData });
+    })
+    .catch(function(err){
+      if(err) return res.status(400).send(err);
+    })
+})
+
 //이미지 디테일 페이지 만들어야 함
 router.post("/getImageDetail", (req, res) => {
   const imageDetail = [];
@@ -115,14 +192,21 @@ router.post("/getImageDetail", (req, res) => {
 });
 
 router.post("/changeurl", (req, res) =>{
-  console.log("req.body.url : ",req.body.url)
+  console.log("req.body.url : ",req.body)
   firestore.collection('Users').doc(req.body.id).update({
-    image:req.body.url
+    image: req.body.url
   })
-  .then(function(doc){
-    res.status(200).json({success : true})
+  .then(function (docs) {
+    firestore.collection('Images').where('id', '==', req.body.id).get()
+    .then(function(doc){
+      doc.forEach(function(data){
+        firestore.collection('Images').doc(data.id).update({
+          image: req.body.url
+        })
+      })
+    })
   })
-  .catch(function(err){
+  .catch(function (err) {
     if (err) return res.status(400).send(err);
   })
 })

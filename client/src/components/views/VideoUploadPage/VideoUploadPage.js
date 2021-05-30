@@ -202,7 +202,7 @@ function VideoUploadPage(props) {
                 <br />
 
                 <Button disabled={progress != 100 ? true : false} type="primary" size="large" onClick={onSumit}>
-                    submit
+                    등록
                 </Button>
             </Form>
         </div>

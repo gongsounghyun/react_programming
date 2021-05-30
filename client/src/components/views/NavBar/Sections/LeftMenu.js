@@ -19,6 +19,12 @@ function LeftMenu(props) {
     <Menu.Item key="subscription">
       <a href="/subscription">구독 목록</a>
     </Menu.Item>
+    <Menu.Item key="freeboard">
+      <a href="/freeboard">게시판</a>
+    </Menu.Item>
+    <Menu.Item key="searchgym">
+      <a href="/Map">운동 시설 검색</a>
+    </Menu.Item>
   </Menu>
   )
 }

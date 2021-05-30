@@ -86,7 +86,36 @@ router.get("/getVideos", (req, res) => {
           view : doc.data().view,
           time:doc.data().time.toDate(),
         }),
-          console.log('videoData : ', videoData)
+        
+        console.log('videoData : ', videoData)
+      })
+      res.status(200).json({ success: true, videoData })
+    })
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
+    })
+})
+
+router.post("/getVideolists", (req, res) => {
+  //비디오를 데이터베이스에서 가져와서 클라이언트에 보낸다.
+  console.log('getVideolists req.body.idinfo :',req.body)
+  const videoData = [];
+  firestore.collection('Videos').where('id', '==', req.body.idinfo).get()
+    .then(docs => {
+      docs.forEach(function (doc) {
+        videoData.push({
+          docid: doc.id,
+          id: doc.data().id,
+          name: doc.data().name,
+          title: doc.data().title,
+          description: doc.data().description,
+          url: doc.data().url,
+          image: doc.data().image,
+          thumbnail : doc.data().thumbnail,
+          duration : doc.data().duration,
+          view : doc.data().view,
+          time:doc.data().time.toDate(),
+        })
       })
       res.status(200).json({ success: true, videoData })
     })
@@ -113,6 +142,36 @@ router.post("/getVideoDetail", (req, res) => {
   })
     .catch(function (err) {
       if (err) return res.status(400).send(err);
+  })
+});
+
+router.post("/deleteVideos", (req, res) => {
+  const videoData = [];
+  console.log("deleteVideos :",req.body);
+  firestore.collection('Videos').doc(req.body.id).delete()
+  .then(function (newlist) {
+    firestore.collection('Videos').where('id','==',req.body.userId).get()
+    .then(video => {
+      video.forEach(videolist => {
+        videoData.push({
+          docid: videolist.id,
+          id: videolist.data().id,
+          name: videolist.data().name,
+          title: videolist.data().title,
+          description: videolist.data().description,
+          url: videolist.data().url,
+          image: videolist.data().image,
+          thumbnail : videolist.data().thumbnail,
+          duration : videolist.data().duration,
+          view : videolist.data().view,
+          time:videolist.data().time.toDate(),
+        })
+      })
+      res.status(200).json({ success: true, videoData })
+    })
+    .catch(err => {
+      if (err) return res.status(400).send(err);
+    })
   })
 });
 
@@ -192,4 +251,42 @@ router.post("/thumbnail", (req, res) => {
       filename: "thumbnail-%b.jpg",
     });
 });
+
+router.post('/changeimage',(req, res)=>{
+
+  firestore.collection('Videos').where('id','==',req.body.id).get()
+  .then(function(docs){
+    docs.forEach(function(doc){
+      firestore.collection('Videos').doc(doc.id).update({
+        image:req.body.url
+      })
+      .then(function(success){
+        return res.status(200).json({ success: true });
+      })
+      .catch(function(err){
+        if (err) return res.status(400).send(err);
+      })
+    })
+  })
+
+})
+
+router.post('/count',(req, res)=>{
+  const count = [];
+  firestore.collection('Videos').where('id','==',req.body.idinfo).get()
+  .then(function(docs){
+    docs.forEach(doc => {
+      count.push(doc.data())
+    })
+  })
+  firestore.collection('Images').where('id','==',req.body.idinfo).get()
+  .then(function(docs){
+    docs.forEach(doc => {
+      count.push(doc.data())
+    })
+    console.log("count :",count.length)
+    return res.status(200).json({ success: true, videocount : count.length });
+  })
+})
+
 module.exports = router;

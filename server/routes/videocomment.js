@@ -67,4 +67,21 @@ router.post("/getComments", (req, res) => {
   })
 });
 
+
+router.post('/changeimage', (req,res)=>{
+  firestore.collection('VideoComments').where('id','==',req.body.id).get()
+  .then(function(docs){
+    docs.forEach(function(doc){
+      firestore.collection('VideoComments').doc(doc.id).update({
+        image:req.body.url
+      })
+      .then(function(success){
+        return res.status(200).json({ success: true });
+      })
+      .catch(function(err){
+        if (err) return res.status(400).send(err);
+      })
+    })
+  })
+})
 module.exports = router;
