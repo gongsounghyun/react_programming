@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Row, Col, Card, Avatar, Input } from 'antd';
+import { Typography, Row, Col, Card, Avatar, Input, Table, Button } from 'antd';
 import moment from 'moment';
 import Axios from 'axios';
 
@@ -10,6 +10,7 @@ const { Meta } = Card;
 function SubscriptionPage() {
   const [Video, setVideo] = useState([]);
   const [Image, setImage] = useState([]);
+  const [User, setUser] = useState([]);
 
   const onSearch = value => {
     console.log(value);
@@ -96,10 +97,50 @@ function SubscriptionPage() {
       <span> - 조회수 : {image.view}</span>
     </Col>
   })
+  
+  const usercolumn = [
+    {
+        title:"프로필",
+        dataIndex:"image",
+        render:(text, list) => (
+            <img src={`${list.image}`} width="30px" height="30px"  alt="프로필 이미지" title = "프로필 이미지"/>
+        ),//나중에 작성자의 프로필을 보여주는 화면으로 이동할 수 있어야 한다.
+        key:"image",
+    },
+    {
+        title:"아이디",
+        dataIndex:"email",
+        key:"email",
+        width:"200px",
+    },
+    {
+        title:"이름",
+        dataIndex:"name",
+      key: "name",
+    },
+  ];
+
+  const onSumit = (e) => {
+    Axios.get('/api/users/userData')
+      .then(response => {
+        if (response.data.success) {
+            setUser(response.data.info)
+        }
+      })
+  }
 
   return (
     <div style={{ width: '85%', margin: '3rem auto' }}>
-
+      <Button
+        style={{marginTop: '10px', marginBottom: '5px', width: '120px'}}
+        type="primary"
+        size="large"
+        onClick={onSumit}>
+        전체 유저 조회
+      </Button>
+      <div style={{ width: '100%' }}>
+        <Table key={User.docid} columns={usercolumn} dataSource={User} scroll={{ y: 300 }}></Table>
+      </div>
       <Search
         style={{ width: '30%', float: 'right' }}
         placeholder="유저의 이름을 입력"

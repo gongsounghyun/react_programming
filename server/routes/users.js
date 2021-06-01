@@ -125,5 +125,27 @@ router.post("/getData",(req,res)=>{
     })
 });
 
+router.get("/userData",(req,res)=>{
+    console.log("userData docs.data() : ")
+    const info = [];
+    firestore.collection('Users').get()
+    .then(docs => {
+        //console.log("docs.data() : ",docs.data())
+        docs.forEach(doc => {
+            info.push({
+                id:doc.id,
+                name : doc.data().name,
+                image: doc.data().image,
+                email: doc.data().email,
+            })
+        })
+        console.log("info :  ", info)
+        return res.status(200).json({ success: true, info });
+    })
+    .catch(err => {
+        if (err) return res.status(400).send(err);
+    })
+});
+
 
 module.exports = router;
