@@ -22,9 +22,15 @@ function LeftMenu(props) {
     <Menu.Item key="freeboard">
       <a href="/freeboard">게시판</a>
     </Menu.Item>
-    <Menu.Item key="searchgym">
+    <Menu.Item key="Tournament">
+      <a href="/Tournament">대회 정보</a>
+    </Menu.Item>
+    <Menu.Item key="Map">
       <a href="/Map">운동 시설 검색</a>
     </Menu.Item>
+    <Menu.Item key="foodinfo">
+        <a href="/foodinfo">음식정보</a>
+      </Menu.Item>
   </Menu>
   )
 }

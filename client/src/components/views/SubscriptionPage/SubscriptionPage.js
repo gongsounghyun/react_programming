@@ -159,6 +159,7 @@ function SubscriptionPage() {
       <Row gutter={16}>
         {renderImageCards}
       </Row>
+      <br/>
     </div>
   );
 }

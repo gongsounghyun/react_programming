@@ -40,6 +40,7 @@ function NewPost() {
       title: postTitle,
       description: Description,
       name: user.userData.name,
+      id: user.userData._id,
       time: Date.now(),
     };
 

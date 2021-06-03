@@ -4,6 +4,56 @@ const { firestore } = require("../firebase");
 const { auth } = require("../middleware/auth");
 
 //게시글
+
+router.post("/getmycomments", (req, res) => {
+  console.log("getmycomments start");
+  const postData = [];
+  firestore
+    .collection("freeboardComments")
+    .where("id", "==", req.body.idinfo)
+    .get()
+    .then((docs) => {
+      docs.forEach(function (doc) {
+        postData.push({
+          docid: doc.id,
+          postId: doc.data().postId,
+          content: doc.data().content,
+          name: doc.data().name,
+          time: doc.data().time,
+          id: doc.data().id,
+        });
+      });
+      res.status(200).json({ success: true, postData });
+    })
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
+    });
+});
+router.post("/getmyposts", (req, res) => {
+  console.log("getmyposts start");
+  const postData = [];
+  firestore
+    .collection("freeboard")
+    .where("id", "==", req.body.idinfo)
+    .get()
+    .then((docs) => {
+      docs.forEach(function (doc) {
+        postData.push({
+          docid: doc.id,
+          title: doc.data().title,
+          description: doc.data().description,
+          name: doc.data().name,
+          time: doc.data().time,
+          id: doc.data().id,
+        });
+      });
+      res.status(200).json({ success: true, postData });
+    })
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
+    });
+});
+
 router.post("/savepost", (req, res) => {
   console.log(req.body);
 
@@ -14,6 +64,7 @@ router.post("/savepost", (req, res) => {
       description: req.body.description,
       name: req.body.name,
       time: req.body.time,
+      id: req.body.id,
     })
     .then(function (doc) {
       return res.status(200).json({ success: true });
@@ -86,7 +137,7 @@ router.post("/delpost", (req, res) => {
 
 // 댓글
 router.post("/savecomment", (req, res) => {
-  console.log(req.body);
+  console.log("savecomment : ",req.body);
 
   firestore
     .collection("/freeboardComments")
@@ -95,6 +146,7 @@ router.post("/savecomment", (req, res) => {
       name: req.body.name,
       postId: req.body.postId,
       time: req.body.time,
+      id: req.body.id,
     })
     .then(function (doc) {
       return res.status(200).json({ success: true });

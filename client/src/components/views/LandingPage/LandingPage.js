@@ -73,7 +73,7 @@ function LandingPage() {
             <Title level={2} > Recommended </Title>
             <hr />
 
-            <Row gutter={16}>
+            <Row gutter={16} style={{marginBottom:'20px'}}>
                 {renderCards}
             </Row>
         </div>

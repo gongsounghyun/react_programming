@@ -5,6 +5,7 @@ function FrontPage() {
     return (
         <div style= {{textAlign : "center" }}>
             <img src = {home_image} alt = "logo"/>
+            <br /><br />
         </div>
     )
 }

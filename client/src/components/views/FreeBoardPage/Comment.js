@@ -19,20 +19,20 @@ import Axios from "axios";
 const { TextArea } = Input;
 
 function Comment(props) {
-  
-
   const freeboardId = props.postId;
   const variable = { freeboardId: freeboardId };
 
-  
-  const user = useSelector((state) => state.user);
-  
+  const user = useSelector((state) => state.user.userData);
+
   const [userName, setUserName] = useState("초기값");
 
   const [commentsdata, setcommentsdata] = useState([]);
   const [commentValue, setcommentValue] = useState("");
 
   useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+    }
     Axios.post("/api/freeboard/getcomments", variable).then((response) => {
       if (response.data.success) {
         console.log("코멘트 데이터: ", response.data.commentsData);
@@ -41,7 +41,7 @@ function Comment(props) {
         alert("실패했습니다.");
       }
     });
-  }, []);
+  }, [user]);
 
   const renderComments = commentsdata.map((comment, index) => {
     return (
@@ -65,10 +65,10 @@ function Comment(props) {
     console.log("clicked");
     const variables = {
       content: commentValue,
-      name: user.userData.name,
+      name: user.name,
       postId: freeboardId,
-      image: user.userData.image,
-      responseTo: null,
+      image: user.image,
+      id:user._id,
       time: Date.now(),
     };
     console.log(variables);
@@ -105,7 +105,7 @@ function Comment(props) {
 
   const testBt = (e) => {
     e.preventDefault();
-    (props.name === "user." ? alert("삭제 가능"):alert("불가능"))
+    props.name === "user." ? alert("삭제 가능") : alert("불가능");
   };
 
   //setUserName(user.userData.name);
@@ -122,13 +122,13 @@ function Comment(props) {
         </Button>
       </form>
       <br />
-      {props.name === "hjp" ? <p>true</p> : <p>false</p>}
-
-      <Button danger onClick={onDelete}>
-        삭제
-      </Button>
-
-      <Button onClick={testBt}>테스트</Button>
+      {props.name === userName ? (
+        <Button danger onClick={onDelete}>
+          삭제
+        </Button>
+      ) : (
+        <p>삭제불가</p>
+      )}
     </>
   );
 }

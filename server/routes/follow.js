@@ -79,7 +79,7 @@ router.get('/followlist',(req, res)=>{
   })
 })
 
-router.post("/followother", (req, res) => {
+router.post("/followother", (req, res) => { // 내가 팔로우한 사람
   const userdata = [];
   const userlist = [];
   firestore.collection('Follows').where('userFrom', '==', req.body.idinfo).get()
@@ -106,7 +106,7 @@ router.post("/followother", (req, res) => {
   })
 });
 
-router.post("/followto", (req, res) => {
+router.post("/followto", (req, res) => {// 나를 팔로우한 사람
   const userdata = [];
   const userlist = [];
   firestore.collection('Follows').where('userTo', '==', req.body.idinfo).get()

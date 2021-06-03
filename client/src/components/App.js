@@ -20,6 +20,9 @@ import FreeBoardPage from './views/FreeBoardPage/FreeBoardPage';
 import NewPost from './views/FreeBoardPage/NewPost';
 import FreeBoardDetailPage from './views/FreeBoardPage/FreeBoardDetailPage';
 import Map from './views/Map/Kakaomap'
+import Tournament from './views/Tournament/Tournament';
+import FoodInfoPage from './views/FoodInfoPage/FoodInfoPage';
+
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -47,6 +50,8 @@ function App() {
           <Route exact path="/newpost" component={Auth(NewPost, true)} />
           <Route exact path="/freeboard/:freeboardId" component={Auth(FreeBoardDetailPage, true)} />
           <Route exact path="/Map" component={Auth(Map, true)} />
+          <Route exact path="/Tournament" component={Auth(Tournament, true)} />
+          <Route exact path="/foodInfo" component={Auth(FoodInfoPage, null)} />
 
         </Switch>
       </div>

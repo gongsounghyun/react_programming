@@ -134,6 +134,7 @@ const KakaomapContainer = ({ searchPlace }) => {
                 margin: '0 10px'
             }}
                 id="pagination"></div>
+                <br/><br/><br/><br/><br/>
         </div>
     )
 }
