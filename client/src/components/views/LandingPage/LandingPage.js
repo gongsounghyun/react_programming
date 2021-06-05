@@ -70,7 +70,7 @@ function LandingPage() {
 
     return (
         <div style={{ width: '85%', margin: '3rem auto' }}>
-            <Title level={2} > Recommended </Title>
+            <Title level={2} > 비디오 </Title>
             <hr />
 
             <Row gutter={16} style={{marginBottom:'20px'}}>

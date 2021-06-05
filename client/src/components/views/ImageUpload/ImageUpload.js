@@ -110,7 +110,7 @@ function ImageUploadPage(props){
                 message.success('성공적으로 업로드를 했습니다.');
 
                 setTimeout(() => {
-                    props.history.push('/');
+                    props.history.push('/image');
                 }, 3000);
                 
             }else{

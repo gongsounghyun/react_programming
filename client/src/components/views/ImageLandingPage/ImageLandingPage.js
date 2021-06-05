@@ -45,7 +45,7 @@ function ImageLandingPage() {
 
     return (
         <div style={{ width: '85%', margin: '3rem auto' }}>
-            <Title level={2} > Image Lists </Title>
+            <Title level={2} > 이미지 </Title>
             <hr />
 
             <Row gutter={16}>

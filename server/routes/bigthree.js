@@ -68,11 +68,37 @@ router.get("/getBigthrees", (req, res) => {
       });
 
       postData.sort(function (a, b) {
-  
         return b["sum"] - a["sum"];
       });
 
       res.status(200).json({ success: true, postData });
+    })
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
+    });
+});
+
+router.post("/changeimage", (req, res) => {
+  console.log("bigthree changeimage 시작", req.body);
+  firestore
+    .collection("bigthrees")
+    .where("id", "==", req.body.id)
+    .get()
+    .then(function (docs) {
+      docs.forEach(function (doc) {
+        firestore
+          .collection("bigthrees")
+          .doc(doc.id)
+          .update({
+            image: req.body.url,
+          })
+          .then(function (success) {
+            return res.status(200).json({ success: true });
+          })
+          .catch(function (err) {
+            if (err) return res.status(400).send(err);
+          });
+      });
     })
     .catch(function (err) {
       if (err) return res.status(400).send(err);

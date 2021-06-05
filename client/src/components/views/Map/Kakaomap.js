@@ -93,7 +93,7 @@ function Kakaomap() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setPlace(InputText)
+        setPlace(InputText + "헬스장")
         setInputText(""); 
     }
 

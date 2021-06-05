@@ -40,15 +40,17 @@ function BigthreePage(props) {
 
   const renderCards = Bigthrees.map((bigthree, index) => {
     return (
-      <Col key={index} lg={6} md={8} xs={24}>
+      <Col key={index} lg={6}  xs={24}>
         <div
           className={"dfd_" + (index + 1)}
           style={{
             display: "flex",
             flexDirection: "column",
-            width: "200px",
+            width: "100%",
+            height: "50%",
             border: "1px solid black",
             padding: "20px",
+            marginBottom: "20px",
           }}
         >
           <p align="center">{index + 1}등</p>
