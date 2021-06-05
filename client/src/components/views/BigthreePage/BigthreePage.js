@@ -24,7 +24,6 @@ function BigthreePage(props) {
   const user = useSelector((state) => state.user);
   console.log(user);
 
-
   useEffect(() => {
     // dom이 로드되자마자 무엇을 할껏인지
     //console.log(user);
@@ -42,29 +41,42 @@ function BigthreePage(props) {
   const renderCards = Bigthrees.map((bigthree, index) => {
     return (
       <Col key={index} lg={6} md={8} xs={24}>
-        <Meta // 동그랗게 나오는 유저이미지
-          avatar={<Avatar src={bigthree.image} />}
-        />
-        <span>{bigthree.name} </span>
-        <span></span>
-        <br />
-        <span style={{ marginLeft: "3rem" }}>
-          {" "}
-          데드리프트: {bigthree.deadlift} kg
-        </span>
-        <br />
-        <span style={{ marginLeft: "3rem" }}>
-          {" "}
-          벤치프레스: {bigthree.benchpress} kg
-        </span>
-        <br />
-        <span style={{ marginLeft: "3rem" }}> 스쿼트 : {bigthree.squat} kg</span>
-        <br />
+        <div
+          className={"dfd_" + (index + 1)}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "200px",
+            border: "1px solid black",
+            padding: "20px",
+          }}
+        >
+          <p align="center">{index + 1}등</p>
 
-        <span style={{ marginLeft: "3rem" }}> 합: {bigthree.sum} kg </span>
-        <br />
+          <p align="center" style={{ flexGrow: "1" }}>
+            <Avatar size={64} src={bigthree.image}></Avatar>
+          </p>
 
-        <span style={{ marginLeft: "3rem" }}> Date: {bigthree.time}  </span>
+          <p align="center" style={{ flexGrow: "1" }}>
+            <b>이름 :</b> {bigthree.name}
+          </p>
+          <p align="center">
+            <b>데드리프트 :</b> {bigthree.deadlift} kg
+          </p>
+          <p align="center">
+            <b>벤치프레스 :</b> {bigthree.benchpress} kg
+          </p>
+          <p align="center">
+            <b>스쿼트 :</b> {bigthree.squat} kg
+          </p>
+          <p align="center">
+            <b>합 :</b> {bigthree.sum} kg{" "}
+          </p>
+          <p align="center" style={{ marginLeft: "" }}>
+            <b>날짜 : </b>
+            {moment(bigthree.time).format("l")}
+          </p>
+        </div>
       </Col>
     );
   });
@@ -73,11 +85,6 @@ function BigthreePage(props) {
     <div style={{ width: "85%", margin: "3rem auto" }}>
       <Title level={2}>3대측정 순위</Title>
       <hr />
-      <div>{localStorage.getItem("userId")}</div>
-      <Button>버튼</Button>
-      <br />
-      <hr />
-      <br />
 
       <Row gutter={16}>{renderCards}</Row>
     </div>

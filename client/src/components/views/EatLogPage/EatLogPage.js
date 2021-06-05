@@ -68,7 +68,7 @@ function CEatLog(props) {
     Axios.post("/api/eatlog/saveEatLog", variable).then((response) => {
       if (response.data.success) {
         console.log("saveEatLog 성공");
-        message.success("추가되었습니다.");
+        message.success('추가되었습니다.');
       } else {
         console.log("saveEatLog 실패");
       }
@@ -143,8 +143,8 @@ function CEatLogTable(props) {
       dataIndex: "docId",
       render: (_, record) => (
         <Popconfirm
-          title="정말 삭제하시겠습니까?"
-          onConfirm={(e) => deleteEatLog(e.currentTarget.value)}
+          title="정말 삭제하시겟습니까?"
+          onConfirm={() => deleteEatLog(record.docId)}
         >
           <Button type="primary" shape="circle">
             -

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Typography, Button, Form, Input, Progress, Table, Popconfirm } from 'antd';
+import { Typography, Button, Form, Input, Progress, Table, Popconfirm, message } from 'antd';
 import Dropzone from 'react-dropzone';
 import moment from "moment";
 
@@ -9,7 +9,7 @@ import { storage, firebase } from '../../../firebase'
 const { TextArea } = Input;
 const { Title } = Typography;
 
-function Mypage() {
+function Mypage(props) {
     const [Data, setData] = useState()
     const [Image, setImage] = useState() //이미지
     const [Name, setName] = useState()  //이름
@@ -144,7 +144,6 @@ function Mypage() {
 
     const onSumitBigThree = (e) => {
         e.preventDefault();
-        alert(Name);
         console.log("clicked bigthree", Name);
         const variable = {
             deadlift: deadliftValue,
@@ -159,9 +158,10 @@ function Mypage() {
         Axios.post("/api/bigthree/saveBigthree", variable).then((response) => {
             if (response.data.success) {
                 console.log(response.data);
-                //message.success("성공적으로 업로드를 했습니다.");
-                setTimeout(() => console.log("after"), 3000);
-                window.location.reload(true);
+                message.success("성공적으로 업데이트 했습니다.");
+                setTimeout(() => {
+                    props.history.push('/bigthree');
+                }, 1000);
             } else {
                 alert("실패하셧습니다.");
             }

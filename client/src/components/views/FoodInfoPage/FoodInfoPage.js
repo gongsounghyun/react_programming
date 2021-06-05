@@ -200,21 +200,11 @@ function FoodInfoPage() {
     },
   ];
 
-  function onhandleChange(){
-    alert("clcicl");
-    Axios.get("http://192.168.31.162:5000/api/video/getVideos").then((response) => {
-      if (response.data.success) {
-        console.log("코멘트 데이터: ", response.data);
-      } else {
-        alert("실패했습니다.");
-      }
-    });
-  }
   return (
     <div style={{ width: "85%", margin: "3rem auto" }}>
       <Title level={2}>음식정보 게시판</Title>
       <hr />
-      <form >
+      <form>
         <Input
           style={{
             width: "95%",
@@ -224,14 +214,14 @@ function FoodInfoPage() {
           value={searchValue}
           rows={1}
         />
-          <button
-          style={{marginLeft:'10px'}}
-            type="submit"
-            size="large"
-            onClick={onSumit}
-          >
-            검색
-          </button>
+        <button
+          style={{ marginLeft: "10px" }}
+          type="submit"
+          size="large"
+          onClick={onSumit}
+        >
+          검색
+        </button>
       </form>
 
       <div style={{ width: "100%" }}>
@@ -247,10 +237,10 @@ function FoodInfoPage() {
         columns={addedFoods}
         dataSource={saveValues}
       ></Table>
-      <Button onClick={onhandleChange}>test</Button>
 
-      <p>칼로리 합 : {test()}</p>
-      <br/><br/>
+      <p align="center" style={{ marginTop: "30px", fontSize: "large" }}>
+        <b>총 칼로리: {test()}</b>
+      </p>
     </div>
   );
 }
