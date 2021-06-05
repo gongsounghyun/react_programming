@@ -36,7 +36,10 @@ function LeftMenu(props) {
           <a href="/foodinfo">음식정보</a>
         </Menu.Item>
         <Menu.Item key="steroidinfo">
-          <a href="/foodinfo">스테로이드 정보</a>
+          <a href="/steroidinfo">스테로이드 정보</a>
+        </Menu.Item>
+        <Menu.Item key="Healthinfo">
+          <a href="/Healthinfo">부위별 운동 정보</a>
         </Menu.Item>
         <Menu.Item key="eatlog">
           <a href="/eatlog">식단 기록</a>

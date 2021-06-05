@@ -2,17 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { firestore } = require('../firebase');
 
-router.post('/inputdata', (req, res) => {
-    console.log("req.tourdata : ",req.body.tourdata);
-    console.log("req.tourdata : ",req.body.tourdata.length);
-    req.body.tourdata.forEach(docs => {
-        firestore.collection("Touranment").add({
+router.post('/upload', (req, res) => {
+    console.log("req.tourdata : ",req.body.health);
+    console.log("req.tourdata : ",req.body.health.length);
+    req.body.health.forEach(docs => {
+        firestore.collection("HealthInfo").add({
+            body:docs.body,
+            id : docs.id,
+            url : docs.url,
             name:docs.name,
-            scientifcname:docs.scientifcname,
-            info:docs.info,
-            history:docs.history,
-            effect:docs.effect,
-            use:docs.use,
+            image:docs.image,
+            title:docs.title,
+            description:docs.description,
+            view:docs.view
         })
         .then(docs => {
             console.log("docs.data() : ", docs.id);

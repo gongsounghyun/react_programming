@@ -24,6 +24,8 @@ import Tournament from './views/Tournament/Tournament';
 import FoodInfoPage from './views/FoodInfoPage/FoodInfoPage';
 import SteroidInfoPage from './views/SteroidInfoPage/SteroidInfoPage';
 import EatLogPage from './views/EatLogPage/EatLogPage';
+import Healthinfo from './views/HealthInfo/Healthinfo';
+
 
 
 //null   Anyone Can go inside
@@ -56,7 +58,7 @@ function App() {
           <Route exact path="/foodInfo" component={Auth(FoodInfoPage, null)} />
           <Route exact path="/steroidinfo" component={Auth(SteroidInfoPage, null)} />
           <Route exact path="/eatlog" component={Auth(EatLogPage, true)} />
-          
+          <Route exact path="/Healthinfo" component={Auth(Healthinfo, true)} />
 
         </Switch>
       </div>

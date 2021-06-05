@@ -50,18 +50,17 @@ const CSteroidDetail = (props) => {
   return (
     <div className="info">
       <Title level={3}>{props.data.name}</Title>
+      <Title level={4}>학명</Title>
+      <p>{props.data.scientifcname} </p>
+      
+      <Title level={4}>역사</Title>
+      <p>{props.data.history} </p>
+      
+      <Title level={4}>효능</Title>
+      <p>{props.data.info} </p>
 
       <Title level={4}>부작용</Title>
       <p>{props.data.effect}</p>
-
-      <Title level={4}>history</Title>
-      <p>{props.data.history} </p>
-
-      <Title level={4}>info</Title>
-      <p>{props.data.info} </p>
-
-      <Title level={4}>scientifcname</Title>
-      <p>{props.data.scientifcname} </p>
 
       <Title level={4}>사용법</Title>
       <p>{props.data.use} </p>

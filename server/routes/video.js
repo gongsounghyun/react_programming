@@ -85,10 +85,32 @@ router.get("/getVideos", (req, res) => {
           duration : doc.data().duration,
           view : doc.data().view,
           time:doc.data().time.toDate(),
-        }),
-        
-        console.log('videoData : ', videoData)
+        })
       })
+      res.status(200).json({ success: true, videoData })
+    })
+    .catch(function (err) {
+      if (err) return res.status(400).send(err);
+    })
+})
+
+router.post("/gethealthVideos", (req, res) => {
+  //비디오를 데이터베이스에서 가져와서 클라이언트에 보낸다.
+  const videoData = [];
+  firestore.collection('HealthInfo').where("body","==",req.body.bodypart).get()
+    .then(docs => {
+      docs.forEach(function (doc) {
+        videoData.push({
+          docid: doc.id,
+          id: doc.data().id,
+          body:doc.data().body,
+          name: doc.data().name,
+          title: doc.data().title,
+          description: doc.data().description,
+          url: doc.data().url,
+          image: doc.data().image,
+          view : doc.data().view,
+        })})
       res.status(200).json({ success: true, videoData })
     })
     .catch(function (err) {
