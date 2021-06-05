@@ -10,13 +10,14 @@ import {
   Input,
   Card,
   Table,
-  Space,
+  Popconfirm,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import Axios from "axios";
 
 const { TextArea } = Input;
+const { Title, Text } = Typography;
 
 function Comment(props) {
   const freeboardId = props.postId;
@@ -28,6 +29,21 @@ function Comment(props) {
 
   const [commentsdata, setcommentsdata] = useState([]);
   const [commentValue, setcommentValue] = useState("");
+
+  const deleteComment = (docId) => {
+    console.log("cickced", docId);
+
+    Axios.post("/api/freeboard/delcomment", { docId: docId }).then(
+      (response) => {
+        if (response.data.success) {
+          console.log("성공적으로 댓글을 삭제함");
+          window.location.reload(false);
+        } else {
+          console.log("댓글을 삭제 실패함");
+        }
+      }
+    );
+  };
 
   useEffect(() => {
     if (user) {
@@ -45,14 +61,30 @@ function Comment(props) {
 
   const renderComments = commentsdata.map((comment, index) => {
     return (
-      <li key={index}>
-        <span>{comment.name}</span>
-
-        <p>{moment(comment.time).format("LLLL")} </p>
-
-        <p>{comment.content} </p>
+      <div style={{ marginTop: "10px", borderBottom: "1px solid #9C9C9C" }}>
+        <div style={{ display: "flex", backgroundColor: "" }}>
+          <p style={{ flexGrow: "1", marginLeft: "10px" }}>
+            <b>{comment.name}</b>
+          </p>
+          <p style={{ flexGrow: "1", marginRight: "10px", textAlign: "right" }}>
+            {moment(comment.time).format("LLLL")}
+          </p>
+        </div>
+        <p style={{ marginLeft: "10px" }}>{comment.content}</p>
         <br />
-      </li>
+        <div align="right" style={{ marginBottom: "10px" }}>
+          {comment.name === userName ? (
+            <Popconfirm
+              title="정말 삭제 하시겠습니까?"
+              onConfirm={() => deleteComment(comment.commentId)}
+            >
+              <Button>삭제</Button>
+            </Popconfirm>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
     );
   });
 
@@ -68,7 +100,7 @@ function Comment(props) {
       name: user.name,
       postId: freeboardId,
       image: user.image,
-      id:user._id,
+      id: user._id,
       time: Date.now(),
     };
     console.log(variables);
@@ -103,33 +135,32 @@ function Comment(props) {
     });
   };
 
-  const testBt = (e) => {
-    e.preventDefault();
-    props.name === "user." ? alert("삭제 가능") : alert("불가능");
-  };
-
-  //setUserName(user.userData.name);
-
   return (
-    <>
-      <p>댓글</p>
-      <Row gutter={16}>{renderComments}</Row>
+    <div>
+      <Title level={4}>댓글</Title>
+      <Row gutter={1}>{renderComments}</Row>
 
-      <form>
-        <TextArea onChange={onhandleChange} value={commentValue} rows={4} />
-        <Button type="primary" size="large" onClick={onSumit}>
-          확인
-        </Button>
-      </form>
-      <br />
-      {props.name === userName ? (
-        <Button danger onClick={onDelete}>
-          삭제
-        </Button>
-      ) : (
-        <p>삭제불가</p>
-      )}
-    </>
+      <TextArea
+        style={{ marginTop: "20px", marginBottom: "20px" }}
+        onChange={onhandleChange}
+        value={commentValue}
+        rows={4}
+      />
+      <Button type="primary" size="large" onClick={onSumit}>
+        댓글작성
+      </Button>
+      <div align="right" style={{}}>
+        {props.name === userName ? (
+          <Popconfirm title="정말 삭제하시겠습니까?" onConfirm={onDelete}>
+            <Button type="danger" size="large">
+              삭제
+            </Button>
+          </Popconfirm>
+        ) : (
+          <p> </p>
+        )}
+      </div>
+    </div>
   );
 }
 

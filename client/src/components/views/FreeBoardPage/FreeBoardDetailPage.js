@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "antd";
 import Axios from "axios";
-import Comment from './Comment';
+import Comment from "./Comment";
+import moment from "moment";
 
 const { Title } = Typography;
 
@@ -26,11 +27,16 @@ function FreeBoardDetailPage(props) {
   return (
     <div style={{ width: "85%", margin: "3rem auto" }}>
       <Title level={2}>{postsData.title}</Title>
-      <span>{postsData.name}</span>
       <hr />
-      <div>{postsData.description}</div>
-      <hr />
-      <Comment postId = {freeboardId} name = {postsData.name} />
+      <div>
+        <p style={{ textAlign: "right" }}>
+          <b>작성자:</b> {postsData.name} 작성 시간:
+          {moment(postsData.time).format("LLLL")}
+        </p>
+        <div style={{ margin: "1rem auto" }}>{postsData.description}</div>
+        <hr />
+        <Comment postId={freeboardId} name={postsData.name} />
+      </div>
     </div>
   );
 }

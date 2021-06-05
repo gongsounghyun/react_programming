@@ -60,21 +60,43 @@ function NewPost() {
   };
 
   return (
-    <form>
-      <div style={{ width: "85%", margin: "3rem auto" }}>
-        <Title level={2}>새글 작성</Title>
-        <hr />
-        <Title level={4}>제목</Title>
-        <TextArea onChange={onTitleChange} value={postTitle} rows={1} />
+    <div style={{ width: "85%", margin: "3rem auto" }}>
+      <Title level={2}>새글 작성</Title>
+      <hr />
+      <div
+        style={{
+          width: "85%",
+          margin: "2rem auto",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Title level={3}>제목</Title>
+        <TextArea
+          onChange={onTitleChange}
+          value={postTitle}
+          rows={1}
+          style={{ marginBottom: "20px" }}
+        />
         <br />
-        <Title level={4}>내용</Title>
-        <TextArea onChange={onDescriptionChange} value={Description} rows={8} />
+        <Title level={3}>내용</Title>
+        <TextArea
+          onChange={onDescriptionChange}
+          value={Description}
+          rows={8}
+          style={{ marginBottom: "20px" }}
+        />
 
-        <Button type="primary" size="large" onClick={onSumit}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={onSumit}
+          style={{ margin: "auto"}}
+        >
           확인
         </Button>
       </div>
-    </form>
+    </div>
   );
 }
 

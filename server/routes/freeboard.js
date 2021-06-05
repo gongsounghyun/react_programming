@@ -135,6 +135,19 @@ router.post("/delpost", (req, res) => {
 
 // 게시글 끝
 
+router.post("/delcomment", (req, res) => {
+  const docId = req.body.docId;
+  console.log("docid", docId);
+  firestore
+    .collection("freeboardComments")
+    .doc(docId)
+    .delete()
+    .then(function (docs) {
+      res.status(200).json({ success: true });
+    });
+});
+
+
 // 댓글
 router.post("/savecomment", (req, res) => {
   console.log("savecomment : ",req.body);

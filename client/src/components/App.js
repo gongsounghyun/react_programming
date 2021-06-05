@@ -22,6 +22,8 @@ import FreeBoardDetailPage from './views/FreeBoardPage/FreeBoardDetailPage';
 import Map from './views/Map/Kakaomap'
 import Tournament from './views/Tournament/Tournament';
 import FoodInfoPage from './views/FoodInfoPage/FoodInfoPage';
+import SteroidInfoPage from './views/SteroidInfoPage/SteroidInfoPage';
+import EatLogPage from './views/EatLogPage/EatLogPage';
 
 
 //null   Anyone Can go inside
@@ -52,6 +54,9 @@ function App() {
           <Route exact path="/Map" component={Auth(Map, true)} />
           <Route exact path="/Tournament" component={Auth(Tournament, true)} />
           <Route exact path="/foodInfo" component={Auth(FoodInfoPage, null)} />
+          <Route exact path="/steroidinfo" component={Auth(SteroidInfoPage, null)} />
+          <Route exact path="/eatlog" component={Auth(EatLogPage, true)} />
+          
 
         </Switch>
       </div>

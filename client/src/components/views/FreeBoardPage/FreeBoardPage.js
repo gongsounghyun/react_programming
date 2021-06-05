@@ -35,37 +35,57 @@ function FreeBoardPage() {
     });
   }, []); //
   return (
-    <div style={{ width: "85%", margin: "3rem auto" }}>
+    <div
+      style={{
+        width: "85%",
+        margin: "3rem auto",
+        //border: "1px solid black",
+      }}
+    >
       <Title level={2}>자유 게시판</Title>
       <hr />
-      <Table dataSource={postsData}>
-        <Column
-          title="제목"
-          dataIndex="title"
-          key="title"
-          render={(text, record) => (
-            <a href={`/freeboard/${record.freeboardId}`}>{text}</a>
-          )}
-          width="800px"
-        />
-        <Column title="글쓴이" dataIndex="name" key="name" />
 
-        <Column
-          title="작성일"
-          dataIndex="time"
-          render={(text, record) => (
-            <span>{moment(text).format("YYYY년 MM월 DD일")}</span>
-          )}
-          key="time"
-        />
-      </Table>
-      <br/>
-     
-      <Link to="/newpost">
-        <Button type="primary" size="large">
-          글쓰기
-        </Button>
-      </Link>
+      <div
+        style={{
+          display: "flex",
+          width: "90%",
+          flexDirection: "column",
+          alignItems: "",
+          justifyContent: "space-between",
+          //border: "1px solid black",
+          textAlign: "right",
+          margin: "auto",
+        }}
+      >
+        <Table dataSource={postsData}>
+          <Column
+            title="제목"
+            dataIndex="title"
+            key="title"
+            render={(text, record) => (
+              <a href={`/freeboard/${record.freeboardId}`}>{text}</a>
+            )}
+            width="50%"
+          />
+          <Column title="작성자" dataIndex="name" key="name" width="25%" />
+
+          <Column
+            title="작성일"
+            dataIndex="time"
+            render={(text, record) => (
+              <span>{moment(text).format("YYYY년 MM월 DD일")}</span>
+            )}
+            key="time"
+            width="25%"
+          />
+        </Table>
+
+        <Link to="/newpost">
+          <Button type="primary" size="large">
+            글쓰기
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
