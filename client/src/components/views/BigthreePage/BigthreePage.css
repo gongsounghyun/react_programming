@@ -1,0 +1,35 @@
+.dfd_1 {
+  box-shadow: 5px 5px 5px 5px gray;
+
+  background: #ff4e50; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #f9d423,
+    #ff4e50
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #f9d423,
+    #ff4e50
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.dfd_2 {
+  box-shadow: 5px 5px 5px 5px gray;
+  background: #bdc3c7; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to top,
+    #2c3e50,
+    #bdc3c7
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to top,
+    #2c3e50,
+    #bdc3c7
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.dfd_3 {
+  box-shadow: 5px 5px 5px 5px gray;
+  background-image: linear-gradient(to top, #603813 10%, #b29f94 100%);
+}

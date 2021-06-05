@@ -14,6 +14,7 @@ import moment from "moment";
 import Axios from "axios";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
+import "./BigthreePage.css";
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -48,7 +49,8 @@ function BigthreePage(props) {
             flexDirection: "column",
             width: "100%",
             height: "50%",
-            border: "1px solid black",
+            border: "1px solid gray",
+            borderRadius: "20px",
             padding: "20px",
             marginBottom: "20px",
           }}

@@ -289,15 +289,32 @@ function Mypage(props) {
     {
       title: "제거",
       dataIndex: "docid",
-      render: (_, record) =>
-        VideoList.length >= 1 ? (
-          <Popconfirm
-            title="정말 삭제하시겟습니까?"
-            onConfirm={() => console.log("done")}
-          >
-            <a>제거</a>
-          </Popconfirm>
-        ) : null,
+      render: (_, record) => (
+        <Popconfirm
+          title="정말 삭제하시겟습니까?"
+          onConfirm={() => {
+            Axios.post("/api/freeboard/delpost", { postId: record.docid }).then(
+              (response) => {
+                if (response.data.success) {
+                  console.log("성공적으로 게시글을 삭제함");
+                  message.success("성공적으로 게시글을 삭제 했습니다.");
+                } else {
+                  alert("커멘트를 저장하지 못했습니다.");
+                }
+              }
+            );
+
+            Axios.post("/api/freeboard/getmyposts", id).then((response) => {
+              if (response.data.success) {
+                console.log("게시글 리스폰스데이터", response.data);
+                setFreeBoardList(response.data.postData);
+              }
+            });
+          }}
+        >
+          <a>제거</a>
+        </Popconfirm>
+      ),
     },
   ];
 
@@ -325,15 +342,32 @@ function Mypage(props) {
     {
       title: "제거",
       dataIndex: "docid",
-      render: (_, record) =>
-        VideoList.length >= 1 ? (
-          <Popconfirm
-            title="정말 삭제하시겟습니까?"
-            onConfirm={() => console.log("done")}
-          >
-            <a>제거</a>
-          </Popconfirm>
-        ) : null,
+      render: (_, record) => (
+        <Popconfirm
+          title="정말 삭제하시겟습니까?"
+          onConfirm={() => {
+            Axios.post("/api/freeboard/delcomment", {
+              docId: record.docid,
+            }).then((response) => {
+              if (response.data.success) {
+                console.log("성공적으로 댓글을 삭제함");
+                message.success("성공적으로 댓글을 삭제 했습니다.");
+              } else {
+                console.log("댓글을 삭제 실패함");
+              }
+            });
+
+            Axios.post("/api/freeboard/getmycomments", id).then((response) => {
+              if (response.data.success) {
+                console.log("댓글 리스폰스데이터", response.data);
+                setFreeBoardCommentList(response.data.postData);
+              }
+            });
+          }}
+        >
+          <a>제거</a>
+        </Popconfirm>
+      ),
     },
   ];
 

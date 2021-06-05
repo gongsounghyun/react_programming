@@ -37,7 +37,17 @@ function Comment(props) {
       (response) => {
         if (response.data.success) {
           console.log("성공적으로 댓글을 삭제함");
-          window.location.reload(false);
+
+          Axios.post("/api/freeboard/getcomments", variable).then(
+            (response) => {
+              if (response.data.success) {
+                console.log("코멘트 데이터: ", response.data.commentsData);
+                setcommentsdata(response.data.commentsData);
+              } else {
+                alert("실패했습니다.");
+              }
+            }
+          );
         } else {
           console.log("댓글을 삭제 실패함");
         }
@@ -110,12 +120,19 @@ function Comment(props) {
         console.log("comment : ", response.data);
         setcommentValue("");
         //props.refreshFunction(response.data.recoment);
+
+        Axios.post("/api/freeboard/getcomments", variable).then((response) => {
+          if (response.data.success) {
+            console.log("코멘트 데이터: ", response.data.commentsData);
+            setcommentsdata(response.data.commentsData);
+          } else {
+            alert("실패했습니다.");
+          }
+        });
       } else {
         alert("커멘트를 저장하지 못했습니다.");
       }
     });
-
-    window.location.reload(false);
   };
 
   const onDelete = (e) => {

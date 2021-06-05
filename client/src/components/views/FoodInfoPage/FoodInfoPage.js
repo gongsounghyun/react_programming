@@ -21,6 +21,10 @@ import { resolve } from "path";
 const { Title } = Typography;
 const { Column, ColumnGroup } = Table;
 const { TextArea } = Input;
+const { Search } = Input;
+
+const id = localStorage.getItem("userId");
+const today = moment(Date.now()).format("YYYY-MM-DD"); //2017-01-25
 
 function FoodInfoPage() {
   const [foodData, setfoodData] = useState([]);
@@ -43,10 +47,9 @@ function FoodInfoPage() {
     return sum;
   }
 
-  const onSumit = (e) => {
-    e.preventDefault();
+  const onSumit = (value) => {
     console.log("clicked");
-    const variable = { search: searchValue };
+    const variable = { search: value };
     Axios.post("/api/foodapi/getfoods", variable).then((response) => {
       if (response.data.success) {
         console.log("음식정보", response.data.data);
@@ -200,29 +203,36 @@ function FoodInfoPage() {
     },
   ];
 
+  const saveEatLog = () => {
+    console.log(saveValues, today, id);
+
+    const variable = {
+      date: today,
+      userId: id,
+      savedFoods: saveValues,
+    };
+
+    Axios.post("/api/eatlog/saveFoods", variable).then((response) => {
+      if (response.data.success) {
+        console.log("saveFoods 성공");
+        message.success("식단 기록에 추가되었습니다.");
+      } else {
+        console.log("saveFoods 실패");
+      }
+    });
+  };
+
   return (
     <div style={{ width: "85%", margin: "3rem auto" }}>
       <Title level={2}>음식정보 게시판</Title>
       <hr />
-      <form>
-        <Input
-          style={{
-            width: "95%",
-            align: "center",
-          }}
-          onChange={onserachValueChange}
-          value={searchValue}
-          rows={1}
-        />
-        <button
-          style={{ marginLeft: "10px" }}
-          type="submit"
-          size="large"
-          onClick={onSumit}
-        >
-          검색
-        </button>
-      </form>
+
+      <Search
+        style={{ marginBottom: "10px" }}
+        placeholder="검색할 음식 이름을 넣으세요"
+        onSearch={onSumit}
+        enterButton
+      />
 
       <div style={{ width: "100%" }}>
         <Table
@@ -239,7 +249,19 @@ function FoodInfoPage() {
       ></Table>
 
       <p align="center" style={{ marginTop: "30px", fontSize: "large" }}>
-        <b>총 칼로리: {test()}</b>
+        <b>총 칼로리: {test()}</b> <br /> <br />
+        <Button style={{}} type="primary" onClick={saveEatLog}>
+          오늘({today}) 식단에 추가하기
+        </Button>
+        <br /> <br />
+        <Button
+          onClick={() => {
+            setSaveValues([]);
+            message.success("초기화되었습니다.");
+          }}
+        >
+          저장 초기화
+        </Button>
       </p>
     </div>
   );

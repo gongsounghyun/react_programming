@@ -68,7 +68,7 @@ function CEatLog(props) {
     Axios.post("/api/eatlog/saveEatLog", variable).then((response) => {
       if (response.data.success) {
         console.log("saveEatLog 성공");
-        message.success('추가되었습니다.');
+        message.success("추가되었습니다.");
       } else {
         console.log("saveEatLog 실패");
       }
@@ -171,24 +171,44 @@ function EatLogPage() {
   const today = moment(Date.now()).format("YYYY-MM-DD"); //2017-01-25
   const [eatLogList, seteatLogList] = useState([]);
   const [selectedDay, setSelectedDay] = useState(today);
+  const [sumCal, setSumCal] = useState("0");
 
   function setDay(value) {
     setSelectedDay(value);
   }
+
+  function sumValue() {
+    let sum = 0;
+    let a = eatLogList.forEach((ob) => {
+      sum = sum + parseInt(ob.foodCal);
+      console.log(sum);
+    });
+    return sum;
+  }
   function refreshList(value) {
+    let sum = "0";
     const variable = {
       userId: id.idInfo,
       date: value,
     };
 
-    Axios.post("/api/eatlog/getEatLog", variable).then((response) => {
-      if (response.data.success) {
-        console.log("getEatLog 성공", response.data.postData);
-        seteatLogList(response.data.postData);
-      } else {
-        console.log("getEatLog 실패");
-      }
-    });
+    Axios.post("/api/eatlog/getEatLog", variable)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("getEatLog 성공", response.data.postData);
+          seteatLogList(response.data.postData);
+        } else {
+          console.log("getEatLog 실패");
+        }
+      })
+      .then(
+        eatLogList.forEach((doc) => {
+          console.log(doc.foodCal);
+          sum = String(parseInt(sum) + parseInt(doc.foodCal));
+        })
+      );
+
+    setSumCal(sum);
   }
 
   useEffect(() => {
@@ -225,6 +245,10 @@ function EatLogPage() {
             eatLogList={eatLogList}
             refreshList={refreshList}
           ></CEatLogTable>
+
+          <p style={{ marginTop: "20px", fontSize: "large"}} align="center">
+            총 칼로리: {sumValue()}
+          </p>
         </div>
       </div>
     </div>
