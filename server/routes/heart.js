@@ -77,7 +77,9 @@ router.post("/unHeart", (req, res) => {
     let variable = {}
     if (req.body.videoId) {
         //console.log(req.body);
-        var deledata = firestore.collection('Hearts').where('videoId', '==', req.body.videoId).where('userId','==',req.body.userId)
+        var deledata = firestore.collection('Hearts')
+        .where('videoId', '==', req.body.videoId)
+        .where('userId','==',req.body.userId)
         deledata.get().then(function(docs){
             docs.forEach(function(doc){
                 doc.ref.delete();
@@ -89,7 +91,9 @@ router.post("/unHeart", (req, res) => {
         })
     } else {
         variable = { commentId: req.body.commentId , userId: req.body.userId }
-        var deledata = firestore.collection('Hearts').where('commentId',"==", req.body.commentId).where('userId',"==",req.body.userId)
+        var deledata = firestore.collection('Hearts')
+        .where('commentId',"==", req.body.commentId)
+        .where('userId',"==",req.body.userId)
         deledata.get().then(function(docs){
             docs.forEach(function(doc){
                 doc.ref.delete();

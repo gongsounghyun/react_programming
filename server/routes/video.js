@@ -32,10 +32,7 @@ const upload = multer({ storage: storge }).single("file"); // single 하나의 �
 router.post("/uploadVideo", (req, res) => {
   console.log("req.video : ", req.body);
 
-  //비디오 정보들을 저장한다.
-  firestore
-    .collection("Videos")
-    .add({
+  firestore.collection("Videos").add({
       id: req.body.id,
       name: req.body.name,
       title: req.body.title,
@@ -78,9 +75,7 @@ router.post("/uploadfiles", (req, res) => {
 router.get("/getVideos", (req, res) => {
   //비디오를 데이터베이스에서 가져와서 클라이언트에 보낸다.
   const videoData = [];
-  firestore
-    .collection("Videos")
-    .get()
+  firestore.collection("Videos").get()
     .then((docs) => {
       docs.forEach(function (doc) {
         videoData.push({
@@ -142,10 +137,7 @@ router.post("/gethealthVideos", (req, res) => {
 router.post("/FollowUser", (req, res) => {
   console.log("req.body.User : ", req.body.User);
   const videoData = [];
-  firestore
-    .collection("Videos")
-    .where("name", "==", req.body.User)
-    .get()
+  firestore.collection("Videos").where("name", "==", req.body.User).get()
     .then((docs) => {
       docs.forEach((doc) => {
         videoData.push({

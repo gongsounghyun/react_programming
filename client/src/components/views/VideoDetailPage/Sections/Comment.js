@@ -23,6 +23,7 @@ function Comment(props) {
       image : user.userData.image,
       responseTo: null,
     };
+    if(commentValue){
     Axios.post('/api/videocomment/saveComment', variables).then((response) => {
       if (response.data.success) {
         console.log("comment : ", response.data.recoment);
@@ -32,6 +33,10 @@ function Comment(props) {
         alert('커멘트를 저장하지 못했습니다.');
       }
     });
+    }
+    else{
+      alert('빈 커맨트는 저장할 수 없습니다.');
+    }
   };
   return (
     <div>

@@ -39,7 +39,9 @@ router.post("/followed", (req, res)=> {
 
 router.post("/unfollow", (req, res) => {
 
-  var deledata = firestore.collection('Follows').where('userTo', '==', req.body.userTo).where('userFrom', '==', req.body.userFrom)
+  var deledata = firestore.collection('Follows')
+  .where('userTo', '==', req.body.userTo)
+  .where('userFrom', '==', req.body.userFrom)
   deledata.get().then(function (docs) {
     docs.forEach(function (doc) {
       doc.ref.delete();

@@ -112,10 +112,7 @@ router.get("/getImages", (req, res) => {
 router.post("/FollowUser", (req, res) => {
   console.log("req.body.User : ", req.body.User);
   const imageData = [];
-  firestore
-    .collection("Images")
-    .where("name", "==", req.body.User)
-    .get()
+  firestore.collection("Images").where("name", "==", req.body.User).get()
     .then((docs) => {
       docs.forEach((doc) => {
         imageData.push({

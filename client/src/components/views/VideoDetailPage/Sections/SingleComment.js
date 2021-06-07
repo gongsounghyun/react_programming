@@ -20,7 +20,8 @@ function SingleComment(props) {
       image : user.userData.image,
       responseTo: props.comment.docid,
     };
-    Axios.post('/api/videocomment/saveComment', variables).then((response) => {
+    if(CommentValue){
+      Axios.post('/api/videocomment/saveComment', variables).then((response) => {
         if (response.data.success) {
           console.log(response.data.recoment)
           setCommentValue(''); //저장후 빈칸으로 만들기 위해
@@ -30,6 +31,10 @@ function SingleComment(props) {
           alert('커멘트를 저장하지 못했습니다.');
         }
       }); 
+    }
+    else{
+      alert('빈 커맨트는 저장할 수 없습니다.');
+    }
   };
   const onClickReplyOpen = () => {
     setOpenReply(!OpenReply);

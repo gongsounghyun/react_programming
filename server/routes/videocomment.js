@@ -8,9 +8,7 @@ const { firestore } = require("../firebase");
 //=================================
 
 router.post("/saveComment", (req, res) => {
-  firestore
-    .collection("VideoComments")
-    .add({
+  firestore.collection("VideoComments").add({
       id: req.body.id,
       content: req.body.content,
       name: req.body.name,

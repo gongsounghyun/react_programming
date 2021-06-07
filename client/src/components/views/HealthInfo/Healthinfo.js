@@ -25,15 +25,18 @@ function LandingPage() {
 
     const renderCards = Videos.map((video, index) => {
         return <Col style = {{marginBottom : '8px'}} key = {index} lg={12} xs={24}>
-            {/*lg:가장클때 6그리드를쓰겠다. md:중간크기일때 8그리드를 쓰겠다. 
-            xs:가장작은 크기일때는 24그리드를 쓰겠다. 총24그리드 
-            33번째 줄 비디오 디테일 클릭링크, 비디오아이디를 가져온다. >*/}
             <div style={{ position: 'relative' }}>
-                <a href={`/video/${video.docid}`}>
-                    <iframe width='700' height='400' src={`${video.url}`} title="video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </a>
+                <iframe 
+                    width='700' 
+                    height='400' 
+                    src={`${video.url}`} 
+                    title="video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
             </div><br />
-            <Meta // 동그랗게 나오는 유저이미지
+            <Meta
                 avatar={
                     <Avatar src={video.image} />
                 }
