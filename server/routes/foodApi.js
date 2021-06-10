@@ -9,7 +9,7 @@ router.post("/getfoods", (req, res) => {
   const foodinfos = [];
 
   Axios.get(
-    `http://apis.data.go.kr/1470000/FoodNtrIrdntInfoService/getFoodNtrItdntList?serviceKey=TshKHslm6GmNATkZS2JeTC980GB82Sd0bKzKYVLFJot%2BZ%2BgAkwhD2202qIGevXZeTT%2FBfdn16iZfv3uOBuFzyQ%3D%3D&desc_kor=${encodeStr}&type=json&numOfRows=100
+    `http://apis.data.go.kr/1470000/FoodNtrIrdntInfoService/getFoodNtrItdntList?serviceKey=TshKHslm6GmNATkZS2JeTC980GB82Sd0bKzKYVLFJot%2BZ%2BgAkwhD2202qIGevXZeTT%2FBfdn16iZfv3uOBuFzyQ%3D%3D&desc_kor=${encodeStr}&type=json&numOfRows=10
     `
   )
     .then((Response) => {
