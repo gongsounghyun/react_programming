@@ -15,23 +15,28 @@ function SubscriptionPage() {
   const onSearch = (value) => {
     console.log(value);
     const variable = { User: value };
-    Axios.post("/api/video/FollowUser", variable).then((response) => {
-      if (response.data.success) {
-        console.log(response.data);
-        setVideo(response.data.videoData);
-      } else {
-        alert("구독자 비디오 가져오기를 실패했습니다.");
-      }
-    });
+    if (value) {
+      Axios.post("/api/video/FollowUser", variable).then((response) => {
+        if (response.data.success) {
+          console.log(response.data);
+          setVideo(response.data.videoData);
+        } else {
+          alert("구독자 비디오 가져오기를 실패했습니다.");
+        }
+      });
 
-    Axios.post("/api/image/FollowUser", variable).then((response) => {
-      if (response.data.success) {
-        console.log(response.data);
-        setImage(response.data.imageData);
-      } else {
-        alert("구독자 비디오 가져오기를 실패했습니다.");
-      }
-    });
+      Axios.post("/api/image/FollowUser", variable).then((response) => {
+        if (response.data.success) {
+          console.log(response.data);
+          setImage(response.data.imageData);
+        } else {
+          alert("구독자 비디오 가져오기를 실패했습니다.");
+        }
+      });
+    }
+    else{
+      alert("공백은 검색할 수 없습니다.");
+    }
   };
 
   const renderVideoCards = Video.map((video, index) => {

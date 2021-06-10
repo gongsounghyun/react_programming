@@ -9,7 +9,7 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 import VideoUploadPage from './views/VideoUploadPage/VideoUploadPage';
 import VideoDetailPage from './views/VideoDetailPage/VideoDetailPage';
-import SubscriptionPage from './views/SubscriptionPage/SubscriptionPage';
+import UserSearchPage from './views/UserSearchPage/UserSearchPage';
 import imageUpload from './views/ImageUpload/ImageUpload';
 import imageLandingPage from './views/ImageLandingPage/ImageLandingPage';
 import FrontPage from './views/FrontPage/FrontPage';
@@ -46,7 +46,7 @@ function App() {
           <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} />
           <Route exact path="/image/upload" component={Auth(imageUpload, true)} />
           <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, true)} />
-          <Route exact path="/subscription" component={Auth(SubscriptionPage, null)} />
+          <Route exact path="/UserSearchPage" component={Auth(UserSearchPage, null)} />
           <Route exact path="/bigthree" component={Auth(BigthreePage, null)} />
           <Route exact path="/image/:imageId" component={Auth(ImageDetail, true)} />
           <Route exact path="/Mypage" component={Auth(Mypage, true)} />

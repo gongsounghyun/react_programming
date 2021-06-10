@@ -85,6 +85,7 @@ const SteroidinfoPage = () => {
 
   function onSearch(value) {
     console.log(value);
+    if(value){
     Axios.post("/api/steroidinfo/searchSteroid", { steroidName: value }).then(
       (response) => {
         if (response.data.success) {
@@ -95,6 +96,10 @@ const SteroidinfoPage = () => {
         }
       }
     );
+    }
+    else{
+      alert("공백은 검색하실 수 없습니다.");
+    }
   }
   useEffect(() => {
     Axios.get("/api/steroidinfo/getSteroidList").then((response) => {

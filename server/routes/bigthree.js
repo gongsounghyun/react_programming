@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { firestore } = require("../firebase");
-const { Bigthree } = require("../models/Bigthree");
 
 //=================================
 //             Comment

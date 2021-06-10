@@ -130,21 +130,25 @@ function VideoUploadPage(props) {
         }
 
         console.log("user.userData._id", user.userData._id);
+        if (VideoTitle && Description) {
+            Axios.post('/api/video/uploadVideo', variable)
+                .then(response => {
+                    if (response.data.success) {
+                        console.log(response.data);
+                        message.success('성공적으로 업로드를 했습니다.');
 
-        Axios.post('/api/video/uploadVideo', variable)
-            .then(response => {
-                if (response.data.success) {
-                    console.log(response.data);
-                    message.success('성공적으로 업로드를 했습니다.');
+                        setTimeout(() => {
+                            props.history.push('/landing');
+                        }, 3000);
 
-                    setTimeout(() => {
-                        props.history.push('/landing');
-                    }, 3000);
-
-                } else {
-                    alert("비디오 업로드에 실패하셧습니다.");
-                }
-            })
+                    } else {
+                        alert("비디오 업로드에 실패하셧습니다.");
+                    }
+                })
+        }
+        else{
+            alert('모든 빈 칸을 입력해주십시오');
+        }
     }
 
     const data = {

@@ -50,14 +50,19 @@ function FoodInfoPage() {
   const onSumit = (value) => {
     console.log("clicked");
     const variable = { search: value };
-    Axios.post("/api/foodapi/getfoods", variable).then((response) => {
-      if (response.data.success) {
-        console.log("음식정보", response.data.data);
-        setfoodData(response.data.data);
-      } else {
-        alert("실패했습니다.");
-      }
-    });
+    if (value) {
+      Axios.post("/api/foodapi/getfoods", variable).then((response) => {
+        if (response.data.success) {
+          console.log("음식정보", response.data.data);
+          setfoodData(response.data.data);
+        } else {
+          alert("실패했습니다.");
+        }
+      });
+    }
+    else{
+      alert('검색하려는 음식을 입력해주십시오');
+    }
   };
   useEffect(() => {
     if (user) {

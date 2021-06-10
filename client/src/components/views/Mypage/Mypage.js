@@ -155,17 +155,22 @@ function Mypage(props) {
         parseInt(squatValue),
       time: Date.now(),
     };
-    Axios.post("/api/bigthree/saveBigthree", variable).then((response) => {
-      if (response.data.success) {
-        console.log(response.data);
-        message.success("성공적으로 업데이트 했습니다.");
-        setTimeout(() => {
-          props.history.push("/bigthree");
-        }, 1000);
-      } else {
-        alert("실패하셧습니다.");
-      }
-    });
+    if (deadliftValue && benchpressValue && squatValue) {
+      Axios.post("/api/bigthree/saveBigthree", variable).then((response) => {
+        if (response.data.success) {
+          console.log(response.data);
+          message.success("성공적으로 업데이트 했습니다.");
+          setTimeout(() => {
+            props.history.push("/bigthree");
+          }, 1000);
+        } else {
+          alert("실패하셧습니다.");
+        }
+      });
+    }
+    else{
+      alert('3대 측정값의 모든 빈 칸을 입력해주십시오');
+    }
   };
 
   const onDrop = (files) => {

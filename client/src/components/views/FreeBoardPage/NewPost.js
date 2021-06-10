@@ -45,18 +45,22 @@ function NewPost() {
     };
 
     console.log(variable);
-
-    Axios.post("/api/freeboard/savepost", variable).then((response) => {
-      if (response.data.success) {
-        console.log(response.data);
-        message.success("성공적으로 업로드를 했습니다.");
-        setTimeout(() => console.log("after"), 3000);
-        window.location.reload(true);
-        window.location.href = "freeboard";
-      } else {
-        alert("실패하셨습니다.");
-      }
-    });
+    if (postTitle && Description) {
+      Axios.post("/api/freeboard/savepost", variable).then((response) => {
+        if (response.data.success) {
+          console.log(response.data);
+          message.success("성공적으로 업로드를 했습니다.");
+          setTimeout(() => console.log("after"), 3000);
+          window.location.reload(true);
+          window.location.href = "freeboard";
+        } else {
+          alert("실패하셨습니다.");
+        }
+      });
+    }
+    else{
+      alert('반 컨을 모두 입력해주십시오');
+    }
   };
 
   return (

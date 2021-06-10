@@ -3,6 +3,7 @@ const router = express.Router();
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg");
+const del = require("del");
 const { firestore, firebase } = require("../firebase");
 
 let storge = multer.diskStorage({
@@ -56,7 +57,11 @@ router.post("/uploadImage", (req, res) => {
       view: req.body.view,
       time: firebase.firestore.FieldValue.serverTimestamp(),
     })
-    .then(function (docs) {
+    .then(function (docs) {setTimeout(() => {
+      del(["uploads/image/*"]).then((paths) => {
+        console.log("image is delete : \n", paths.join("\n"));
+      });
+    }, 4000);
       res.status(200).json({ success: true });
     })
     .catch(function (err) {

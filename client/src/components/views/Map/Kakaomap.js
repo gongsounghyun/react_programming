@@ -93,8 +93,13 @@ function Kakaomap() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setPlace(InputText + "헬스장")
-        setInputText(""); 
+        if(InputText){
+            setPlace(InputText + "헬스장")
+            setInputText("");
+        }
+        else{
+            alert("검색어를 입력해주십시오.");
+        }
     }
 
     return (

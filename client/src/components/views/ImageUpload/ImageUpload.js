@@ -100,23 +100,27 @@ function ImageUploadPage(props){
             title: ImageTitle,
             description: Description,
             image: user.userData.image,
-            view : 0,
+            view: 0,
         }
+        if (ImageTitle && Description) {
+            Axios.post('/api/image/uploadImage', variable)
+                .then(response => {
+                    if (response.data.success) {
+                        console.log(response.data);
+                        message.success('성공적으로 업로드를 했습니다.');
 
-        Axios.post('/api/image/uploadImage', variable)
-        .then(response => {
-            if(response.data.success){
-                console.log(response.data);
-                message.success('성공적으로 업로드를 했습니다.');
+                        setTimeout(() => {
+                            props.history.push('/image');
+                        }, 3000);
 
-                setTimeout(() => {
-                    props.history.push('/image');
-                }, 3000);
-                
-            }else{
-                alert("비디오 업로드에 실패하셧습니다.");
-            }
-        })
+                    } else {
+                        alert("비디오 업로드에 실패하셧습니다.");
+                    }
+                })
+        }
+        else{
+            alert('모든 빈 칸을 입력해주십시오');
+        }
     }
 
     const data = {

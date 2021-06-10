@@ -16,8 +16,8 @@ function LeftMenu(props) {
         <a href="/landing">비디오</a>
       </Menu.Item>
 
-      <Menu.Item key="subscription">
-        <a href="/subscription">유저 검색</a>
+      <Menu.Item key="UserSearchPage">
+        <a href="/UserSearchPage">유저 검색</a>
       </Menu.Item>
       <Menu.Item key="freeboard">
         <a href="/freeboard">게시판</a>

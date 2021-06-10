@@ -114,25 +114,29 @@ function Comment(props) {
       time: Date.now(),
     };
     console.log(variables);
+    if (commentValue) {
+      Axios.post("/api/freeboard/savecomment", variables).then((response) => {
+        if (response.data.success) {
+          console.log("comment : ", response.data);
+          setcommentValue("");
+          //props.refreshFunction(response.data.recoment);
 
-    Axios.post("/api/freeboard/savecomment", variables).then((response) => {
-      if (response.data.success) {
-        console.log("comment : ", response.data);
-        setcommentValue("");
-        //props.refreshFunction(response.data.recoment);
-
-        Axios.post("/api/freeboard/getcomments", variable).then((response) => {
-          if (response.data.success) {
-            console.log("코멘트 데이터: ", response.data.commentsData);
-            setcommentsdata(response.data.commentsData);
-          } else {
-            alert("실패했습니다.");
-          }
-        });
-      } else {
-        alert("커멘트를 저장하지 못했습니다.");
-      }
-    });
+          Axios.post("/api/freeboard/getcomments", variable).then((response) => {
+            if (response.data.success) {
+              console.log("코멘트 데이터: ", response.data.commentsData);
+              setcommentsdata(response.data.commentsData);
+            } else {
+              alert("실패했습니다.");
+            }
+          });
+        } else {
+          alert("커멘트를 저장하지 못했습니다.");
+        }
+      });
+    }
+    else{
+      alert('댓글을 입력해주십시오');
+    }
   };
 
   const onDelete = (e) => {

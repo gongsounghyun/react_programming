@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Calendar, Badge, Typography, Button } from 'antd';
-import data from './Tournamentdata'
 import Axios from 'axios';
 
 const { Title } = Typography;
